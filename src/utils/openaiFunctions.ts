@@ -31,3 +31,38 @@ export const CHAPTER_FUNCTION: ChatCompletionFunctions = {
     },
   },
 };
+
+export const QUIZ_FUNCTION: ChatCompletionFunctions = {
+  name: "get_quiz",
+  description: "Set a list of all quiz questions.",
+  parameters: {
+    type: "object",
+    properties: {
+      questions: {
+        type: "array",
+        description: "A list of quiz questions.",
+        items: {
+          type: "object",
+          properties: {
+            question: {
+              type: "string",
+              description: "The question.",
+            },
+            options: {
+              type: "array",
+              description: "A list of options.",
+              items: {
+                type: "string",
+              },
+            },
+            correctOptionIndex: {
+              type: "number",
+              description: "The index of the correct option.",
+            },
+          },
+          required: ["question", "options", "correctOptionIndex"],
+        },
+      },
+    },
+  },
+};

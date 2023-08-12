@@ -8,7 +8,7 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
-export const generateChapters = async ({
+export const openAiStructuredResponse = async ({
   task,
   query,
   functionCall,
@@ -18,7 +18,7 @@ export const generateChapters = async ({
   const prompt = getPrompt(task);
   const template = `
     ${prompt} 
-    user query:${query}
+    ${query}
     `;
   try {
     const response = await openai.createChatCompletion({

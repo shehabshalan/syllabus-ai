@@ -24,12 +24,29 @@ Respond in Markdown format.
 "
 `;
 
+const QUIZ_TEMPLATE = `
+"You are an expert tutor crafting a comprehensive, engaging quiz to test a student's knowledge on a subject.
+The subject will be an entire chapter given below. Your job is to understand the content of the chapter and create a quiz based on it.
+Your quiz will be broken down into a number of questions ideally 3-5.
+Each question will have a question statement and 4 options out of which only one is correct.
+The questions must be based on the content of the chapter provided below.
+Do not ask questions that are not related to the chapter.
+Example:
+Chapter: Introduction to Java
+Question 1: What is a java?
+Options: ["A programming language", "A coffee", "A tea", "A cup"]
+correctOptionIndex: 0
+
+Chapter: `;
+
 export const getPrompt = (task: string): string => {
   switch (task) {
     case "chapter":
       return CHAPTER_TEMPLATE;
     case "lesson":
       return LESSON_TEMPLATE;
+    case "quiz":
+      return QUIZ_TEMPLATE;
     default:
       throw new Error("Invalid task type");
   }
