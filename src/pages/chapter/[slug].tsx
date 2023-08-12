@@ -3,11 +3,16 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 import React, { useEffect, useState } from "react";
-import { Chapter, Task } from "../../../global";
+import { Chapter, Quiz, Task } from "../../../global";
 import { tasks } from "@/utils/tasks";
 import { useRouter } from "next/router";
 import ChapterSkeleton from "@/components/ChapterSkeleton";
-import { generateLessonFromChapter } from "@/utils/openai";
+import {
+  generateLessonFromChapter,
+  openAiStructuredResponse,
+} from "@/utils/openai";
+import { QUIZ_FUNCTION } from "@/utils/openaiFunctions";
+import QuizForm from "@/components/QuizForm";
 
 const ChapterDetails = () => {
   const router = useRouter();
@@ -15,9 +20,11 @@ const ChapterDetails = () => {
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [chapter, setChapter] = useState<Chapter>();
   const [content, setContent] = useState<string>("");
+  const [quiz, setQuiz] = useState<Quiz[]>();
   const [error, setError] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [isQuerying, setIsQuerying] = useState<boolean>(false);
+  console.log("task", selectedTask);
 
   const getChapterLesson = async (chapter: Chapter) => {
     setError(false);
@@ -33,6 +40,23 @@ const ChapterDetails = () => {
         setContent(response);
         localStorage.setItem(chapter.slug, response);
       }
+    } catch (e) {
+      setError(true);
+    } finally {
+      setIsQuerying(false);
+    }
+  };
+
+  const getQuiz = async () => {
+    setError(false);
+    const query = content;
+    try {
+      const response = await openAiStructuredResponse({
+        query,
+        task: "quiz",
+        functionCall: QUIZ_FUNCTION,
+      });
+      setQuiz(response?.questions);
     } catch (e) {
       setError(true);
     } finally {
@@ -83,6 +107,13 @@ const ChapterDetails = () => {
     }
   }, [slug, router]);
 
+  useEffect(() => {
+    if (selectedTask && chapter) {
+      setIsQuerying(true);
+      getQuiz();
+    }
+  }, [selectedTask]);
+
   if (loading || isQuerying) {
     return <ChapterSkeleton />;
   }
@@ -100,7 +131,7 @@ const ChapterDetails = () => {
 
   return (
     <>
-      <div className="flex flex-col max-h-screen space-y-6 ">
+      <div className="flex flex-col space-y-6">
         <header className="sticky top-0 z-40 border-b bg-background">
           <div className="container flex h-16 items-center justify-between py-4">
             <h1 className="text-2xl font-semibold">{chapter?.name}</h1>
@@ -124,6 +155,18 @@ const ChapterDetails = () => {
           </main>
         </div>
       </div>
+      {selectedTask && quiz && (
+        <div className="container mb-4 mt-4">
+          <h1 className="text-2xl font-semibold mb-4">Quiz</h1>
+          <div className=" flex flex-col md:flex-row gap-12 border rounded">
+            <div className="flex-1 overflow-y-auto max-h-[32rem]">
+              <div className="container mt-4 mdx">
+                <QuizForm questions={quiz} />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

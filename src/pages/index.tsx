@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import CardSkeleton from "@/components/CardSkeleton";
 import { CHAPTER_FUNCTION } from "@/utils/openaiFunctions";
 import { Chapter } from "../../global";
-import { generateChapters } from "@/utils/openai";
+import { openAiStructuredResponse } from "@/utils/openai";
 
 export default function Home() {
   const [query, setQuery] = useState<string>("");
@@ -23,7 +23,7 @@ export default function Home() {
       setError(false);
       setIsQuerying(true);
       try {
-        const response = await generateChapters({
+        const response = await openAiStructuredResponse({
           functionCall: CHAPTER_FUNCTION,
           query,
           task: "chapter",
