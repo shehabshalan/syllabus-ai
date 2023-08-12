@@ -20,6 +20,7 @@ const ChapterDetails = () => {
   const [isQuerying, setIsQuerying] = useState<boolean>(false);
 
   const getChapterLesson = async (chapter: Chapter) => {
+    setError(false);
     const query = `Chapter name: ${chapter?.name}
                   Chapter description: ${chapter?.description}.`;
     try {
@@ -39,45 +40,47 @@ const ChapterDetails = () => {
     }
   };
 
-  useEffect(() => {
+  const getChapter = async (slug: string) => {
     setLoading(true);
 
-    if (slug) {
-      const chapters = JSON.parse(localStorage.getItem("chapters") || "[]");
+    const chapters = JSON.parse(localStorage.getItem("chapters") || "[]");
 
-      if (!chapters || chapters.length === 0) {
+    if (!chapters || chapters.length === 0) {
+      setLoading(false);
+      setError(true);
+      setTimeout(() => {
+        router.push("/");
+      }, 2000);
+      return;
+    }
+
+    const chapter = chapters?.find((chapter: Chapter) => chapter.slug === slug);
+
+    if (chapter) {
+      setChapter(chapter);
+      const chapterExists = localStorage.getItem(chapter.slug);
+
+      if (chapterExists) {
+        setContent(chapterExists);
         setLoading(false);
-        setError(true);
-        setTimeout(() => {
-          router.push("/");
-        }, 2000);
         return;
       }
 
-      const chapter = chapters?.find(
-        (chapter: Chapter) => chapter.slug === slug
-      );
-
-      if (chapter) {
-        setChapter(chapter);
-        const chapterExists = localStorage.getItem(chapter.slug);
-
-        if (chapterExists) {
-          setContent(chapterExists);
-          setLoading(false);
-          return;
-        }
-
-        setIsQuerying(true);
-        getChapterLesson(chapter);
-      } else {
-        setError(true);
-        setTimeout(() => {
-          router.push("/");
-        }, 2000);
-      }
+      setIsQuerying(true);
+      getChapterLesson(chapter);
+    } else {
+      setError(true);
+      setTimeout(() => {
+        router.push("/");
+      }, 2000);
     }
     setLoading(false);
+  };
+
+  useEffect(() => {
+    if (slug) {
+      getChapter(slug as string);
+    }
   }, [slug, router]);
 
   if (loading || isQuerying) {
