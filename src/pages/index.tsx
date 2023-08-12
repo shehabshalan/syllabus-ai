@@ -18,7 +18,7 @@ export default function Home() {
   const [error, setError] = useState<boolean>(false);
 
   const handleQuery = async () => {
-    if (searchCount === 5) {
+    if (searchCount < 5) {
       setChapters([]);
       setError(false);
       setIsQuerying(true);
@@ -38,8 +38,6 @@ export default function Home() {
       } finally {
         setIsQuerying(false);
       }
-    } else {
-      alert("You have reached the search limit for today.");
     }
   };
 
@@ -56,7 +54,7 @@ export default function Home() {
 
   return (
     <section className="container mt-12 gap-6 pb-8 pt-6 md:py-10">
-      {searchCount === 5 ? (
+      {searchCount < 5 ? (
         <div className="flex max-w-[700px] mx-auto flex-col items-center justify-center gap-6">
           <h1 className="text-3xl font-bold leading-tight tracking-tighter md:text-4xl ">
             Learn <span className="underline">anything</span> with SyllabusAI
