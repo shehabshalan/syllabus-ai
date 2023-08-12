@@ -12,28 +12,34 @@ import { generateChapters } from "@/utils/openai";
 
 export default function Home() {
   const [query, setQuery] = useState<string>("");
+  const [searchCount, setSearchCount] = useState<number>(0);
   const [isQuerying, setIsQuerying] = useState<boolean>(false);
   const [chapters, setChapters] = useState<Chapter[]>([]);
   const [error, setError] = useState<boolean>(false);
 
   const handleQuery = async () => {
-    setChapters([]);
-    setError(false);
-    setIsQuerying(true);
-
-    try {
-      const response = await generateChapters({
-        functionCall: CHAPTER_FUNCTION,
-        query,
-        task: "chapter",
-      });
-      setChapters(response?.chapters);
-      localStorage.setItem("chapters", JSON.stringify(response?.chapters));
-    } catch (e) {
-      console.log(e);
-      setError(true);
-    } finally {
-      setIsQuerying(false);
+    if (searchCount === 5) {
+      setChapters([]);
+      setError(false);
+      setIsQuerying(true);
+      try {
+        const response = await generateChapters({
+          functionCall: CHAPTER_FUNCTION,
+          query,
+          task: "chapter",
+        });
+        setChapters(response?.chapters);
+        localStorage.setItem("chapters", JSON.stringify(response?.chapters));
+        setSearchCount(searchCount + 1);
+        localStorage.setItem("cntr", (searchCount + 1).toString());
+      } catch (e) {
+        console.log(e);
+        setError(true);
+      } finally {
+        setIsQuerying(false);
+      }
+    } else {
+      alert("You have reached the search limit for today.");
     }
   };
 
@@ -42,43 +48,54 @@ export default function Home() {
     if (chapters) {
       setChapters(JSON.parse(chapters));
     }
+    const storedCount = localStorage.getItem("cntr");
+    if (storedCount) {
+      setSearchCount(parseInt(storedCount));
+    }
   }, []);
 
   return (
     <section className="container mt-12 gap-6 pb-8 pt-6 md:py-10">
-      <div className="flex max-w-[700px] mx-auto flex-col items-center justify-center gap-6">
-        <h1 className="text-3xl font-bold leading-tight tracking-tighter md:text-4xl ">
-          Learn <span className="underline">anything</span> with SyllabusAI
-        </h1>
-        <p>
-          (5/<span className="font-bold ">5</span>) queries
-        </p>
-        <div className="flex w-full items-center space-x-2">
-          <div className="relative flex-grow">
-            <Input
-              className="h-12 pr-12 "
-              type="text"
-              placeholder="Type here a topic you want to learn"
-              value={query}
-              disabled={isQuerying}
-              onChange={(e) => setQuery(e.target.value)}
-            />
-            <Button
-              className="absolute top-0 right-0 h-full px-4 rounded-tl-none rounded-bl-none"
-              type="submit"
-              disabled={isQuerying}
-              onClick={handleQuery}
-            >
-              <Sparkles className="mr-2 h-4 w-4" /> Learn
-            </Button>
+      {searchCount === 5 ? (
+        <div className="flex max-w-[700px] mx-auto flex-col items-center justify-center gap-6">
+          <h1 className="text-3xl font-bold leading-tight tracking-tighter md:text-4xl ">
+            Learn <span className="underline">anything</span> with SyllabusAI
+          </h1>
+          <p>
+            ({searchCount}/<span className="font-bold ">5</span>) queries
+          </p>
+          <div className="flex w-full items-center space-x-2">
+            <div className="relative flex-grow">
+              <Input
+                className="h-12 pr-12 "
+                type="text"
+                placeholder="Type here a topic you want to learn"
+                value={query}
+                disabled={isQuerying}
+                onChange={(e) => setQuery(e.target.value)}
+              />
+              <Button
+                className="absolute top-0 right-0 h-full px-4 rounded-tl-none rounded-bl-none"
+                type="submit"
+                disabled={isQuerying}
+                onClick={handleQuery}
+              >
+                <Sparkles className="mr-2 h-4 w-4" /> Learn
+              </Button>
+            </div>
           </div>
+          <p className="text-sm text-muted-foreground">
+            Hint: Try topics like &ldquo;Programming&rdquo;,
+            &ldquo;Philosophy&ldquo;, or &ldquo;Music Theory&rdquo;
+          </p>
         </div>
-        <p className="text-sm text-muted-foreground">
-          Hint: Try topics like &ldquo;Programming&rdquo;,
-          &ldquo;Philosophy&ldquo;, or &ldquo;Music Theory&rdquo;
-        </p>
-      </div>
-
+      ) : (
+        <div className="flex max-w-[700px] mx-auto flex-col items-center justify-center gap-6">
+          <h1 className="text-3xl font-bold leading-tight tracking-tighter md:text-4xl ">
+            You have reached the search limit for today.
+          </h1>
+        </div>
+      )}
       {isQuerying || chapters.length > 0 ? (
         <section
           id="features"
