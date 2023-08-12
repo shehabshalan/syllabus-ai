@@ -12,7 +12,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <div className="flex-1">
           <Component {...pageProps} />
         </div>
-        {/* <SiteFooter /> */}
+        <SiteFooter />
       </div>
     </ThemeProvider>
   );
