@@ -30,6 +30,7 @@ const ChapterDetails = () => {
 
       if (response) {
         setContent(response);
+        localStorage.setItem(chapter.slug, response);
       }
     } catch (e) {
       setError(true);
@@ -52,13 +53,23 @@ const ChapterDetails = () => {
         }, 2000);
         return;
       }
+
       const chapter = chapters?.find(
         (chapter: Chapter) => chapter.slug === slug
       );
+
       if (chapter) {
-        getChapterLesson(chapter);
         setChapter(chapter);
+        const chapterExists = localStorage.getItem(chapter.slug);
+
+        if (chapterExists) {
+          setContent(chapterExists);
+          setLoading(false);
+          return;
+        }
+
         setIsQuerying(true);
+        getChapterLesson(chapter);
       } else {
         setError(true);
         setTimeout(() => {
