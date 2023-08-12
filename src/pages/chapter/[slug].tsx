@@ -67,7 +67,7 @@ const ChapterDetails = () => {
       }
     }
     setLoading(false);
-  }, [slug]);
+  }, [slug, router]);
 
   if (loading || isQuerying) {
     return <ChapterSkeleton />;
@@ -102,7 +102,9 @@ const ChapterDetails = () => {
           <main className="flex w-full flex-1 flex-col border rounded">
             <div className="flex-1 overflow-y-auto max-h-[32rem]">
               <div className="container mt-4 mdx">
-                <ReactMarkdown children={content} remarkPlugins={[remarkGfm]} />
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                  {content}
+                </ReactMarkdown>
               </div>
             </div>
           </main>

@@ -74,7 +74,8 @@ export default function Home() {
           </div>
         </div>
         <p className="text-sm text-muted-foreground">
-          Tip: Try topics like "Programming", "Philosophy", or "Music Theory"
+          Hint: Try topics like &ldquo;Programming&rdquo;,
+          &ldquo;Philosophy&ldquo;, or &ldquo;Music Theory&rdquo;
         </p>
       </div>
 
