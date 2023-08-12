@@ -18,6 +18,12 @@ export interface Chapter {
   description: string;
 }
 
+export interface Quiz {
+  question: string;
+  correctOptionIndex: number;
+  options: string[];
+}
+
 export interface CallOpenAIWithFunctionParams {
   task: string;
   query: string;
