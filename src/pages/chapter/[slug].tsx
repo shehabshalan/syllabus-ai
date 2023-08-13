@@ -1,18 +1,15 @@
+import React, { useEffect, useState } from "react";
 import { TaskSelector } from "@/components/TaskSelector";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-
-import React, { useEffect, useState } from "react";
 import { Chapter, Quiz, Task } from "../../../global";
-import { tasks } from "@/utils/tasks";
+import { TASK, tasks } from "@/utils/tasks";
 import { useRouter } from "next/router";
 import ChapterSkeleton from "@/components/ChapterSkeleton";
-import {
-  generateLessonFromChapter,
-  openAiStructuredResponse,
-} from "@/utils/openai";
 import { QUIZ_FUNCTION } from "@/utils/openaiFunctions";
 import QuizForm from "@/components/QuizForm";
+import request from "@/utils/request";
+import { ENDPOINTS } from "@/utils/endpoints";
 
 const ChapterDetails = () => {
   const router = useRouter();
@@ -24,22 +21,18 @@ const ChapterDetails = () => {
   const [error, setError] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [isQuerying, setIsQuerying] = useState<boolean>(false);
-  console.log("task", selectedTask);
 
   const getChapterLesson = async (chapter: Chapter) => {
     setError(false);
     const query = `Chapter name: ${chapter?.name}
                   Chapter description: ${chapter?.description}.`;
     try {
-      const response = await generateLessonFromChapter({
+      const response = await request.post(ENDPOINTS.GENERATE_LESSON, {
         query,
-        task: "lesson",
+        task: TASK.LESSON,
       });
-
-      if (response) {
-        setContent(response);
-        localStorage.setItem(chapter.slug, response);
-      }
+      setContent(response.data);
+      localStorage.setItem(chapter.slug, response.data);
     } catch (e) {
       setError(true);
     } finally {
@@ -50,13 +43,23 @@ const ChapterDetails = () => {
   const getQuiz = async () => {
     setError(false);
     const query = content;
+    const quizSlug = `${chapter?.slug}-quiz`;
+    const cachedQuiz = JSON.parse(localStorage.getItem(quizSlug) || "[]");
+
+    if (cachedQuiz.length) {
+      setQuiz(cachedQuiz);
+      setIsQuerying(false);
+      return;
+    }
+
     try {
-      const response = await openAiStructuredResponse({
-        query,
-        task: "quiz",
+      const response = await request.post(ENDPOINTS.GENERATE_QUIZ, {
         functionCall: QUIZ_FUNCTION,
+        query,
+        task: TASK.QUIZ,
       });
-      setQuiz(response?.questions);
+      setQuiz(response?.data);
+      localStorage.setItem(quizSlug, JSON.stringify(response.data));
     } catch (e) {
       setError(true);
     } finally {
@@ -66,10 +69,8 @@ const ChapterDetails = () => {
 
   const getChapter = async (slug: string) => {
     setLoading(true);
-
     const chapters = JSON.parse(localStorage.getItem("chapters") || "[]");
-
-    if (!chapters || chapters.length === 0) {
+    if (!chapters.length) {
       setLoading(false);
       setError(true);
       setTimeout(() => {

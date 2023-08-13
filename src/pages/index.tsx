@@ -1,14 +1,14 @@
-import Image from "next/image";
-import { Inter } from "next/font/google";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import ChapterCard from "@/components/ChapterCard";
 import { Sparkles } from "lucide-react";
-import { useEffect, useState } from "react";
 import CardSkeleton from "@/components/CardSkeleton";
 import { CHAPTER_FUNCTION } from "@/utils/openaiFunctions";
 import { Chapter } from "../../global";
-import { openAiStructuredResponse } from "@/utils/openai";
+import { ENDPOINTS } from "@/utils/endpoints";
+import request from "@/utils/request";
+import { TASK } from "@/utils/tasks";
 
 export default function Home() {
   const [query, setQuery] = useState<string>("");
@@ -23,17 +23,17 @@ export default function Home() {
       setError(false);
       setIsQuerying(true);
       try {
-        const response = await openAiStructuredResponse({
+        const response = await request.post(ENDPOINTS.GENERATE_CHAPTERS, {
           functionCall: CHAPTER_FUNCTION,
           query,
-          task: "chapter",
+          task: TASK.CHAPTER,
         });
-        setChapters(response?.chapters);
-        localStorage.setItem("chapters", JSON.stringify(response?.chapters));
+        setChapters(response.data);
+        localStorage.setItem("chapters", JSON.stringify(response.data));
         setSearchCount(searchCount + 1);
         localStorage.setItem("cntr", (searchCount + 1).toString());
       } catch (e) {
-        console.log(e);
+        alert(e);
         setError(true);
       } finally {
         setIsQuerying(false);
