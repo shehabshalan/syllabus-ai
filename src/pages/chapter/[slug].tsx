@@ -10,6 +10,7 @@ import { QUIZ_FUNCTION } from "@/utils/openaiFunctions";
 import QuizForm from "@/components/QuizForm";
 import request from "@/utils/request";
 import { ENDPOINTS } from "@/utils/endpoints";
+import { openAiUnstructuredResponse } from "@/utils/openai";
 
 const ChapterDetails = () => {
   const router = useRouter();
@@ -27,12 +28,18 @@ const ChapterDetails = () => {
     const query = `Chapter name: ${chapter?.name}
                   Chapter description: ${chapter?.description}.`;
     try {
-      const response = await request.post(ENDPOINTS.GENERATE_LESSON, {
+      const response = await openAiUnstructuredResponse({
         query,
         task: TASK.LESSON,
       });
-      setContent(response.data);
-      localStorage.setItem(chapter.slug, response.data);
+      // const response = await request.post(ENDPOINTS.GENERATE_LESSON, {
+      //   query,
+      //   task: TASK.LESSON,
+      // });
+      if (response) {
+        setContent(response);
+        localStorage.setItem(chapter.slug, response);
+      }
     } catch (e) {
       console.log("error", e);
       setError(true);
