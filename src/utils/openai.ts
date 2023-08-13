@@ -36,7 +36,7 @@ export const openAiStructuredResponse = async ({
   }
 };
 
-export const generateLessonFromChapter = async ({
+export const openAiUnstructuredResponse = async ({
   task,
   query,
 }: CallOpenAIParams): Promise<string | undefined> => {

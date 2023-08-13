@@ -18,3 +18,12 @@ export const tasks: Task[] = [
     slug: "resources",
   },
 ];
+
+export const TASK = {
+  QUIZ: "quiz",
+  SIMPLIFY: "simplify",
+  EXAMPLE: "example",
+  RESOURCES: "resources",
+  CHAPTER: "chapter",
+  LESSON: "lesson",
+};

@@ -1,3 +1,5 @@
+import { TASK } from "./tasks";
+
 const CHAPTER_TEMPLATE = `
 Act as a course creator and create high quality course chapters based on the topic given by the user. 
 Each chapter must have a name, a brief description which should include what will be covered in that chapter and a slug.
@@ -41,11 +43,11 @@ Chapter: `;
 
 export const getPrompt = (task: string): string => {
   switch (task) {
-    case "chapter":
+    case TASK.CHAPTER:
       return CHAPTER_TEMPLATE;
-    case "lesson":
+    case TASK.LESSON:
       return LESSON_TEMPLATE;
-    case "quiz":
+    case TASK.QUIZ:
       return QUIZ_TEMPLATE;
     default:
       throw new Error("Invalid task type");
