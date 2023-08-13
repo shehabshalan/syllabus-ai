@@ -28,17 +28,17 @@ const ChapterDetails = () => {
     const query = `Chapter name: ${chapter?.name}
                   Chapter description: ${chapter?.description}.`;
     try {
-      const response = await openAiUnstructuredResponse({
-        query,
-        task: TASK.LESSON,
-      });
-      // const response = await request.post(ENDPOINTS.GENERATE_LESSON, {
+      // const response = await openAiUnstructuredResponse({
       //   query,
       //   task: TASK.LESSON,
       // });
+      const response = await request.post(ENDPOINTS.GENERATE_LESSON, {
+        query,
+        task: TASK.LESSON,
+      });
       if (response) {
-        setContent(response);
-        localStorage.setItem(chapter.slug, response);
+        setContent(response.data);
+        localStorage.setItem(chapter.slug, response.data);
       }
     } catch (e) {
       console.log("error", e);
