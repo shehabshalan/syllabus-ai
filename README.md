@@ -1,5 +1,4 @@
 
-https://github.com/shehabshalan/syllabus-ai/assets/30008865/015e90e9-8643-4226-b693-e224aff3f282
 ## SyllabusAI - AI Powered Learning Platform
 
 SyllabusAI is an AI powered learning platform that helps individuals to learn anything. It is a web application that uses AI to generate a syllabus for a particular subject. It also generate contents for each chapter in a friendly, easy to understand format. Chapters include functionalities to create quizzes, simplify contents, give examples, and more.
