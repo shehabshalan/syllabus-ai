@@ -34,6 +34,7 @@ const ChapterDetails = () => {
       setContent(response.data);
       localStorage.setItem(chapter.slug, response.data);
     } catch (e) {
+      console.log("error", e);
       setError(true);
     } finally {
       setIsQuerying(false);
