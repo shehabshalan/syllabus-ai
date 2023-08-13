@@ -9,7 +9,7 @@ const ChapterCard = ({ chapter }: ModuleCardProps) => {
   return (
     <Link href={`/chapter/${chapter.slug}`}>
       <div className="relative overflow-hidden rounded-lg border bg-background p-2 cursor-pointer hover:border-primary hover:shadow-lg">
-        <div className="flex h-[180px] flex-col justify-between rounded-md p-6">
+        <div className="flex h-[150px] flex-col justify-between rounded-md p-6">
           <div className="space-y-2">
             <h3 className="font-bold">{chapter.name}</h3>
             <p className="text-sm text-muted-foreground">

@@ -56,9 +56,10 @@ export default function Home() {
     <section className="container mt-12 gap-6 pb-8 pt-6 md:py-10">
       {searchCount < 5 ? (
         <div className="flex max-w-[700px] mx-auto flex-col items-center justify-center gap-6">
-          <h1 className="text-3xl font-bold leading-tight tracking-tighter md:text-4xl ">
+          <h1 className="text-xl md:text-4xl sm:text-lg font-bold leading-tight tracking-tighter">
             Learn <span className="underline">anything</span> with SyllabusAI
           </h1>
+
           <p>
             ({searchCount}/<span className="font-bold ">5</span>) queries
           </p>
@@ -116,7 +117,7 @@ export default function Home() {
           </div>
           <div className="mx-auto text-center md:max-w-[58rem]">
             <p className="text-sm text-muted-foreground">
-              AI may suggest you to learn a module that you already know. You
+              AI may suggest you to learn a chapter that you already know. You
               can skip it.
             </p>
           </div>
