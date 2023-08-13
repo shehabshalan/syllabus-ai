@@ -140,9 +140,11 @@ const ChapterDetails = () => {
 
   return (
     <>
-      <header className="sticky top-0 z-40 border-b bg-background">
+      <header className="sticky top-0 border-b ">
         <div className="container flex h-16 items-center justify-between py-4">
-          <h1 className="text-2xl font-semibold">{chapter?.name}</h1>
+          <h1 className="text-xl font-semibold md:text-2xl lg:text-3xl">
+            {chapter?.name}
+          </h1>
           <TaskSelector
             tasks={tasks}
             selectedTask={selectedTask as Task}
@@ -150,33 +152,29 @@ const ChapterDetails = () => {
           />
         </div>
       </header>
-      <div className=" pb-8 pt-6 md:py-10v">
-        <div className="flex flex-col space-y-6">
-          <div className="container flex flex-col md:flex-row gap-12">
-            <main className="flex w-full flex-1 flex-col border rounded">
-              <div className="flex-1 overflow-y-auto max-h-[32rem]">
-                <div className="container mt-4 mdx">
-                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                    {content}
-                  </ReactMarkdown>
-                </div>
-              </div>
-            </main>
-          </div>
-        </div>
-        {selectedTask && quiz && (
-          <div className="container mb-4 mt-4">
-            <h1 className="text-2xl font-semibold mb-4">Quiz</h1>
-            <div className=" flex flex-col md:flex-row gap-12 border rounded">
-              <div className="flex-1 overflow-y-auto max-h-[32rem]">
-                <div className="container py-5 mdx">
-                  <QuizForm questions={quiz} />
-                </div>
+      <div className="pt-8 pb-6 md:py-10v">
+        <div className="container flex flex-col space-y-6">
+          <main className="border rounded">
+            <div className="overflow-y-auto max-h-[32rem]">
+              <div className="container px-6 py-8">
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                  {content}
+                </ReactMarkdown>
               </div>
             </div>
-          </div>
-        )}
+          </main>
+        </div>
       </div>
+      {selectedTask && quiz && (
+        <div className="container pb-6">
+          <h1 className="text-2xl font-semibold  pb-6">Quiz</h1>
+          <div className=" border rounded overflow-hidden">
+            <div className="px-6 py-8 ">
+              <QuizForm questions={quiz} />
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

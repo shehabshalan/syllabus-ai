@@ -94,20 +94,23 @@ const QuizForm = ({ questions }: QuizFormProps) => {
           />
         ))}
         {!submitted && <Button type="submit">Submit</Button>}
-
-        {submitted && (
-          <div className="flex flex-row  space-x-4 items-center">
-            <Button type="button" onClick={() => setSubmitted(false)}>
-              Try Again
-            </Button>
-            <div className="bg-green-600 text-white px-4 py-2 rounded-md">
-              <p className="text-base font-bold">
-                You scored {score.toFixed(2)}% on the quiz.
-              </p>
-            </div>
-          </div>
-        )}
       </form>
+      {submitted && (
+        <div className="flex flex-col md:flex-row md:justify-between md:items-center mt-4">
+          <Button
+            type="button"
+            onClick={() => setSubmitted(false)}
+            className="mb-4 md:mb-0"
+          >
+            Try Again
+          </Button>
+          <div className="bg-green-600 text-white px-4 py-2 rounded-md text-center md:text-left">
+            <p className="text-sm md:text-base font-bold">
+              You scored {score.toFixed(2)}% on the quiz.
+            </p>
+          </div>
+        </div>
+      )}
     </Form>
   );
 };

@@ -45,7 +45,7 @@ export function TaskSelector({
           aria-expanded={open}
           className="flex-1 justify-between md:max-w-[200px] lg:max-w-[300px]"
         >
-          {selectedTask ? selectedTask.name : "Choose task like Simplify"}
+          {selectedTask ? selectedTask.name : "Choose a task like Quiz"}
           <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
