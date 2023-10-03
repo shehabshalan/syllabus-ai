@@ -76,7 +76,7 @@ export default function Home() {
               <Button
                 className="absolute top-0 right-0 h-full px-4 rounded-tl-none rounded-bl-none"
                 type="submit"
-                disabled={isQuerying}
+                disabled={isQuerying || query.length === 0}
                 onClick={handleQuery}
               >
                 <Sparkles className="mr-2 h-4 w-4" /> Learn
