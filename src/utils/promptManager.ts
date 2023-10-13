@@ -41,6 +41,15 @@ correctOptionIndex: 0
 
 Chapter: `;
 
+const SIMPLIFY_TEMPLATE = `
+I want you simply the topic given to you. Basically explain the concepts in a simple and easy to understand manner. 
+Avoid using technical jargon and explain the concepts in a way that a beginner can understand.
+You can use analogies and examples to explain the concepts.
+Provide practical examples wherever possible to help the reader understand the concepts better.
+Respond in Markdown format.
+
+Topic: `;
+
 export const getPrompt = (task: string): string => {
   switch (task) {
     case TASK.CHAPTER:
@@ -49,6 +58,8 @@ export const getPrompt = (task: string): string => {
       return LESSON_TEMPLATE;
     case TASK.QUIZ:
       return QUIZ_TEMPLATE;
+    case TASK.SIMPLIFY:
+      return SIMPLIFY_TEMPLATE;
     default:
       throw new Error("Invalid task type");
   }
