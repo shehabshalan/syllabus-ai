@@ -18,20 +18,16 @@ const ChapterDetails = () => {
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [chapter, setChapter] = useState<Chapter>();
   const [content, setContent] = useState<string>("");
+  const [simplifiedContent, setSimplifiedContent] = useState<string>("");
   const [quiz, setQuiz] = useState<Quiz[]>();
   const [error, setError] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [isQuerying, setIsQuerying] = useState<boolean>(false);
 
   const getChapterLesson = async (chapter: Chapter) => {
-    setError(false);
     const query = `Chapter name: ${chapter?.name}
                   Chapter description: ${chapter?.description}.`;
     try {
-      // const response = await openAiUnstructuredResponse({
-      //   query,
-      //   task: TASK.LESSON,
-      // });
       const response = await request.post(ENDPOINTS.GENERATE_LESSON, {
         query,
         task: TASK.LESSON,
@@ -42,14 +38,32 @@ const ChapterDetails = () => {
       }
     } catch (e) {
       console.log("error", e);
-      setError(true);
+      setError(!error);
+    } finally {
+      setIsQuerying(false);
+    }
+  };
+
+  const getSimplify = async (chapter: Chapter) => {
+    try {
+      const response = await request.post(ENDPOINTS.SIMPLIFY_CHAPTER, {
+        query: content,
+        task: TASK.SIMPLIFY,
+      });
+      if (response) {
+        const cachedContent = localStorage.getItem(chapter.slug);
+        setSimplifiedContent(response.data);
+        // localStorage.setItem(chapter.slug, response.data);
+      }
+    } catch (e) {
+      console.log("error", e);
+      setError(!error);
     } finally {
       setIsQuerying(false);
     }
   };
 
   const getQuiz = async () => {
-    setError(false);
     const query = content;
     const quizSlug = `${chapter?.slug}-quiz`;
     const cachedQuiz = JSON.parse(localStorage.getItem(quizSlug) || "[]");
@@ -69,7 +83,7 @@ const ChapterDetails = () => {
       setQuiz(response?.data);
       localStorage.setItem(quizSlug, JSON.stringify(response.data));
     } catch (e) {
-      setError(true);
+      setError(!error);
     } finally {
       setIsQuerying(false);
     }
@@ -117,9 +131,13 @@ const ChapterDetails = () => {
   }, [slug, router]);
 
   useEffect(() => {
-    if (selectedTask && chapter) {
+    if (selectedTask?.slug === TASK.QUIZ && chapter) {
       setIsQuerying(true);
       getQuiz();
+    }
+    if (selectedTask?.slug === TASK.SIMPLIFY && chapter) {
+      setIsQuerying(true);
+      getSimplify(chapter);
     }
   }, [selectedTask]);
 
@@ -158,7 +176,9 @@ const ChapterDetails = () => {
             <div className="overflow-y-auto max-h-[32rem]">
               <div className="container px-6 py-8">
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                  {content}
+                  {selectedTask?.slug === TASK.SIMPLIFY
+                    ? simplifiedContent
+                    : content}
                 </ReactMarkdown>
               </div>
             </div>
