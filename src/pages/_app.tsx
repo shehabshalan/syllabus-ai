@@ -3,8 +3,9 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
+import { appWithTranslation } from "next-i18next";
 
-export default function App({ Component, pageProps }: AppProps) {
+function App({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       <div className="relative flex min-h-screen flex-col">
@@ -17,3 +18,5 @@ export default function App({ Component, pageProps }: AppProps) {
     </ThemeProvider>
   );
 }
+
+export default appWithTranslation(App);

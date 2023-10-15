@@ -9,8 +9,11 @@ import { Chapter } from "../../global";
 import { ENDPOINTS } from "@/utils/endpoints";
 import request from "@/utils/request";
 import { TASK } from "@/utils/tasks";
+import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 export default function Home() {
+  const { t } = useTranslation();
   const [query, setQuery] = useState<string>("");
   const [searchCount, setSearchCount] = useState<number>(0);
   const [isQuerying, setIsQuerying] = useState<boolean>(false);
@@ -57,11 +60,13 @@ export default function Home() {
       {searchCount < 5 ? (
         <div className="flex max-w-[700px] mx-auto flex-col items-center justify-center gap-6">
           <h1 className="text-xl md:text-4xl sm:text-lg font-bold leading-tight tracking-tighter">
-            Learn <span className="underline">anything</span> with SyllabusAI
+            {/* Learn <span className="underline">anything</span> with SyllabusAI */}
+            {t("home.title")}
           </h1>
 
           <p>
-            ({searchCount}/<span className="font-bold ">5</span>) queries
+            ({searchCount}/<span className="font-bold ">5</span>){" "}
+            {t("home.queries")}
           </p>
           <div className="flex w-full items-center space-x-2">
             <div className="relative flex-grow">
@@ -83,10 +88,7 @@ export default function Home() {
               </Button>
             </div>
           </div>
-          <p className="text-sm text-muted-foreground">
-            Hint: Try topics like &ldquo;Programming&rdquo;,
-            &ldquo;Philosophy&ldquo;, or &ldquo;Music Theory&rdquo;
-          </p>
+          <p className="text-sm text-muted-foreground">{t("home.hint")}</p>
         </div>
       ) : (
         <div className="flex max-w-[700px] mx-auto flex-col items-center justify-center gap-6">
@@ -117,8 +119,7 @@ export default function Home() {
           </div>
           <div className="mx-auto text-center md:max-w-[58rem]">
             <p className="text-sm text-muted-foreground">
-              AI may suggest you to learn a chapter that you already know. You
-              can skip it.
+              {t("home.disclaimer")}
             </p>
           </div>
         </section>
@@ -134,4 +135,12 @@ export default function Home() {
       ) : null}
     </section>
   );
+}
+
+export async function getStaticProps({ locale }: { locale: string }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale ?? "en", ["common"])),
+    },
+  };
 }
