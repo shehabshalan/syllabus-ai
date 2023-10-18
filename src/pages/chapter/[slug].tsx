@@ -204,7 +204,7 @@ export default ChapterDetails;
 
 export async function getStaticPaths() {
   return {
-    paths: [{ params: { slug: "" } }],
+    paths: [{ params: { slug: "slug" } }],
     fallback: true,
   };
 }
