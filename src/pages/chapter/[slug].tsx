@@ -11,6 +11,7 @@ import QuizForm from "@/components/QuizForm";
 import request from "@/utils/request";
 import { ENDPOINTS } from "@/utils/endpoints";
 import { openAiUnstructuredResponse } from "@/utils/openai";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const ChapterDetails = () => {
   const router = useRouter();
@@ -200,3 +201,18 @@ const ChapterDetails = () => {
 };
 
 export default ChapterDetails;
+
+export async function getStaticPaths() {
+  return {
+    paths: [{ params: { slug: "" } }],
+    fallback: true,
+  };
+}
+
+export async function getStaticProps({ locale }: { locale: string }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale ?? "en", ["common"])),
+    },
+  };
+}

@@ -11,15 +11,18 @@ const About = () => {
         <h1 className="text-4xl md:text-5xl font-bold  mb-4">
           {t("about.title")}
         </h1>
-        <h2 className="text-2xl md:text-3xl font-bold  mb-4">
+        <h2 className="text-2xl md:text-3xl font-bold  mb-12">
           {t("about.subtitle")}
         </h2>
-        <p className="text-lg text-gray-600 max-w-full mx-auto mb-10">
+        <p className="text-lg  max-w-full mx-auto mb-12">
           {t("about.description")}
         </p>
       </div>
 
       <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <h2 className="text-2xl md:text-3xl font-bold  col-span-full mb-4 text-center">
+          {t("about.features")}
+        </h2>
         <FeatureCard
           title={t("about.featureSyllabus")}
           description={t("about.featureSyllabusDescription")}
@@ -56,9 +59,9 @@ const FeatureCard = ({
   title: string;
   description: string;
 }) => (
-  <div className="bg-white p-6 rounded-lg shadow-lg">
+  <div className="p-6 rounded-lg shadow-lg">
     <h3 className="text-xl font-semibold  mb-2">{title}</h3>
-    <p className="text-gray-600">{description}</p>
+    <p>{description}</p>
   </div>
 );
 
