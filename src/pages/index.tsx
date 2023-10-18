@@ -73,7 +73,7 @@ export default function Home() {
               <Input
                 className="h-12 pr-12 "
                 type="text"
-                placeholder="Type here a topic you want to learn"
+                placeholder={t("home.placeholder")}
                 value={query}
                 disabled={isQuerying}
                 onChange={(e) => setQuery(e.target.value)}
@@ -84,7 +84,7 @@ export default function Home() {
                 disabled={isQuerying || query.length === 0}
                 onClick={handleQuery}
               >
-                <Sparkles className="mr-2 h-4 w-4" /> Learn
+                <Sparkles className="mr-2 h-4 w-4" /> {t("home.learn")}
               </Button>
             </div>
           </div>
@@ -93,7 +93,7 @@ export default function Home() {
       ) : (
         <div className="flex max-w-[700px] mx-auto flex-col items-center justify-center gap-6">
           <h1 className="text-3xl font-bold leading-tight tracking-tighter md:text-4xl ">
-            You have reached the search limit for today.
+            {t("home.limit")}
           </h1>
         </div>
       )}
@@ -129,7 +129,7 @@ export default function Home() {
       {error ? (
         <div className="flex flex-col items-center justify-center mt-12">
           <h1 className="text-3xl font-bold leading-tight tracking-tighter md:text-4xl mb-4 ">
-            No results found
+            {t("home.notfound")}
           </h1>
         </div>
       ) : null}
