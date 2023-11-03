@@ -1,4 +1,5 @@
 import { openAiStructuredResponse } from "@/utils/openai";
+import { NextResponse } from "next/server";
 import type { NextApiRequest, NextApiResponse } from "next";
 import type { Chapter, Error } from "../../../global";
 
@@ -18,8 +19,8 @@ export default async function handler(
       query,
       task,
     });
-    res.status(200).json(response?.chapters);
+    NextResponse.json(response?.chapters);
   } catch (error) {
-    res.status(500).json({ error });
+    NextResponse.json({ error });
   }
 }
