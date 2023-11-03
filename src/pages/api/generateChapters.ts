@@ -19,6 +19,7 @@ export default async function handler(
       query,
       task,
     });
+    console.log("server response", response);
     NextResponse.json(response?.chapters);
   } catch (error) {
     NextResponse.json({ error });
