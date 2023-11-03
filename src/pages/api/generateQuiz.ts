@@ -2,10 +2,6 @@ import { openAiStructuredResponse } from "@/utils/openai";
 import type { NextApiRequest, NextApiResponse } from "next";
 import type { Quiz, Error } from "../../../global";
 
-export const config = {
-  runtime: "edge",
-  regions: ["iad1"],
-};
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Quiz[] | Error>
