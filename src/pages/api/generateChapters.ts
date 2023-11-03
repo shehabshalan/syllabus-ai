@@ -1,11 +1,6 @@
 import { openAiStructuredResponse } from "@/utils/openai";
-import { NextResponse } from "next/server";
 import type { NextApiRequest, NextApiResponse } from "next";
 import type { Chapter, Error } from "../../../global";
-
-export const config = {
-  runtime: "edge",
-};
 
 export default async function handler(
   req: NextApiRequest,
@@ -18,9 +13,8 @@ export default async function handler(
       query,
       task,
     });
-    console.log("server response", response);
-    NextResponse.json(response?.chapters);
+    res.status(200).json(response?.chapters);
   } catch (error) {
-    NextResponse.json({ error });
+    res.json({ error });
   }
 }
