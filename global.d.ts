@@ -33,3 +33,6 @@ export interface CallOpenAIParams {
   task: string;
   query: string;
 }
+export interface Error {
+  error: unknown;
+}
