@@ -1,9 +1,10 @@
 import { openAiStructuredResponse } from "@/utils/openai";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { Chapter } from "../../../global";
+import type { Chapter, Error } from "../../../global";
 
-type Error = {
-  error: unknown;
+export const config = {
+  runtime: "edge",
+  regions: ["iad1"],
 };
 
 export default async function handler(

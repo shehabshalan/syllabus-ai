@@ -1,9 +1,6 @@
 import { openAiUnstructuredResponse } from "@/utils/openai";
 import type { NextApiRequest, NextApiResponse } from "next";
-
-type Error = {
-  error: unknown;
-};
+import type { Error } from "../../../global";
 
 export default async function handler(
   req: NextApiRequest,
