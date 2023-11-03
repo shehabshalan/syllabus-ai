@@ -5,7 +5,6 @@ import type { Chapter, Error } from "../../../global";
 
 export const config = {
   runtime: "edge",
-  regions: ["iad1"],
 };
 
 export default async function handler(
@@ -19,6 +18,7 @@ export default async function handler(
       query,
       task,
     });
+    console.log("server response", response);
     NextResponse.json(response?.chapters);
   } catch (error) {
     NextResponse.json({ error });
