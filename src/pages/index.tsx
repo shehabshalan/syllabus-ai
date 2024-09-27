@@ -31,7 +31,6 @@ export default function Home() {
           query,
           task: TASK.CHAPTER,
         });
-        console.log("response", response);
         setChapters(response.data);
         localStorage.setItem("chapters", JSON.stringify(response.data));
         setSearchCount(searchCount + 1);
