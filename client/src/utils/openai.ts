@@ -1,8 +1,8 @@
-import { Configuration, OpenAIApi } from "openai";
-import { getPrompt } from "./promptManager";
-import { CallOpenAIParams, CallOpenAIWithFunctionParams } from "../../global";
+import { Configuration, OpenAIApi } from 'openai';
+import { getPrompt } from './promptManager';
+import { CallOpenAIParams, CallOpenAIWithFunctionParams } from '../../global';
 
-const MODEL = "gpt-3.5-turbo-0613";
+const MODEL = 'gpt-4o-mini';
 const configuration = new Configuration({
   apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
 });
@@ -23,7 +23,7 @@ export const openAiStructuredResponse = async ({
   try {
     const response = await openai.createChatCompletion({
       model: MODEL,
-      messages: [{ role: "user", content: template }],
+      messages: [{ role: 'user', content: template }],
       functions: [functionCall],
       function_call: { name: functionCall.name },
     });
@@ -48,7 +48,7 @@ export const openAiUnstructuredResponse = async ({
   try {
     const response = await openai.createChatCompletion({
       model: MODEL,
-      messages: [{ role: "user", content: template }],
+      messages: [{ role: 'user', content: template }],
     });
     return response.data.choices[0].message?.content;
   } catch (e: any) {
