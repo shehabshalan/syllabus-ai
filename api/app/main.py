@@ -6,10 +6,7 @@ from app.utils.settings import settings
 
 app = FastAPI()
 
-origins = [
-    "http://localhost:3000",
-    # todo: add the production URL
-]
+origins = ["http://localhost:3000", "https://syllabusai.vercel.app"]
 
 app.add_middleware(
     CORSMiddleware,
