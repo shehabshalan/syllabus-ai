@@ -34,4 +34,5 @@ COPY . .
 EXPOSE 8000
 
 # Run the application
-CMD ["poetry", "run", "fastapi", "run", "app/main.py"]
+CMD ["poetry", "run", "fastapi", "dev","app/main.py", "--host", "0.0.0.0", "--port", "8000"]
+# for production fastapi run instead of dev

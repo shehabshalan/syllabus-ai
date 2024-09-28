@@ -18,6 +18,10 @@ https://github.com/shehabshalan/syllabus-ai/assets/30008865/cf2e3b6f-60d5-4981-b
    ```sh
     docker-compose up --build
    ```
+   or to shut down
+   ```sh
+    docker-compose down
+   ```
 3. Go to localhost:3000 for the client and localhost:8000 for the api
 
 ### Built With
