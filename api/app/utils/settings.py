@@ -12,8 +12,9 @@ class ResponseFormat(str, Enum):
 
 
 class Settings(BaseSettings):
-    openai_api_key: str
-    model: str
+    OPENAI_API_KEY: str
+    MODEL: str
+    API_V1_STR: str
 
     class Config:
         env_file = ".env"

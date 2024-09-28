@@ -1,20 +1,21 @@
 import json
 
-from app.utils.settings import ResponseFormat, Settings
 from openai import OpenAI
+
+from app.utils.settings import ResponseFormat, Settings
 
 
 class LLM:
     def __init__(self, settings: Settings):
-        self.client = OpenAI(api_key=settings.openai_api_key)
-        self.model = settings.model
+        self.client = OpenAI(api_key=settings.OPENAI_API_KEY)
+        self.model = settings.MODEL
 
     def query(
         self,
         user_input: str,
         system_prompt="",
         model: str = None,
-        format: ResponseFormat = ResponseFormat.JSON_OBJECT,
+        format: ResponseFormat = ResponseFormat.TEXT,
     ):
         model = model or self.model
         try:
