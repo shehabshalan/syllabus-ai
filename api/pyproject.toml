@@ -13,6 +13,7 @@ pydantic = "^2.9.2"
 openai = "^1.50.1"
 sqlalchemy = "^2.0.35"
 pydantic-settings = "^2.5.2"
+diskcache = "^5.6.3"
 
 
 [build-system]
