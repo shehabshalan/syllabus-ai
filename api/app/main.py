@@ -1,6 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.routes.api_router import api_router
+from app.utils.settings import settings
+
 app = FastAPI()
 
 origins = [
@@ -17,6 +20,9 @@ app.add_middleware(
 )
 
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
+app.include_router(api_router, prefix=settings.API_V1_STR)
+
+
+@app.get(f"{settings.API_V1_STR}/health", tags=["health"])
+def health():
+    return {"status": "ok"}
