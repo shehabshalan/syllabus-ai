@@ -1,5 +1,5 @@
 import { useToast } from '../ui/use-toast';
-import { useAuth } from '@/services/useAuth';
+import { useAuth } from '@/api/useAuth';
 import { ROUTES } from '@/routes/Routes';
 import { useGoogleLogin } from '@react-oauth/google';
 import { Button } from '../ui/button';
@@ -38,7 +38,7 @@ const LoginWithGoogle = () => {
     });
   };
 
-  return <Button onClick={() => login()}>Sign in with Google 🚀</Button>;
+  return <Button onClick={() => login()}>Sign in</Button>;
 };
 
 export default LoginWithGoogle;
