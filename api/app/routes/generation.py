@@ -5,45 +5,52 @@ from app.prompts import (
     GENERATE_CHAPTERS_SYSTEM_PROMPT,
     GENERATE_QUIZ_SYSTEM_PROMPT,
 )
+from app.utils import schema
 from app.utils.llm import LLM
 from app.utils.settings import ResponseFormat, settings
 
 router = APIRouter()
 
 
-@router.post("/chapters")
-def generate_chapters(topic: str):
+@router.post("/chapters", response_model=schema.GenerateChaptersResponse)
+def generate_chapters(
+    request: schema.GenerateChaptersRequest,
+) -> schema.GenerateChaptersResponse:
     llm = LLM(settings)
 
     response = llm.query(
-        user_input=topic,
+        user_input=request.topic,
         system_prompt=GENERATE_CHAPTERS_SYSTEM_PROMPT,
         format=ResponseFormat.JSON_OBJECT,
     )
 
-    return response
+    return schema.GenerateChaptersResponse(**response)
 
 
-@router.post("/chapter")
-def generate_chapter(chapter: str, description: str):
+@router.post("/chapter", response_model=schema.GenerateChapterResponse)
+def generate_chapter(
+    request: schema.GenerateChapterRequest,
+) -> schema.GenerateChapterResponse:
     llm = LLM(settings)
 
     response = llm.query(
-        user_input=f"{chapter}: {description}",
+        user_input=f"{request.chapter}: {request.description}",
         system_prompt=GENERATE_CHAPTER_CONTENT_SYSTEM_PROMPT,
     )
 
-    return response
+    return schema.GenerateChapterResponse(content=response)
 
 
 @router.post("/quiz")
-def generate_quiz(topic: str, content: str):
+def generate_quiz(
+    request: schema.GenerateQuizRequest,
+) -> schema.GenerateQuizResponse:
     llm = LLM(settings)
 
     response = llm.query(
-        user_input=f"{topic}: {content}",
+        user_input=f"{request.topic}: {request.content}",
         system_prompt=GENERATE_QUIZ_SYSTEM_PROMPT,
         format=ResponseFormat.JSON_OBJECT,
     )
 
-    return response
+    return schema.GenerateQuizResponse(**response)
