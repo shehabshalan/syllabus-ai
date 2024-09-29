@@ -1,6 +1,16 @@
-export const ENDPOINTS = {
-  GENERATE_CHAPTERS: '/api/generate-chapters',
-  GENERATE_LESSON: '/api/generate-lesson',
-  GENERATE_QUIZ: '/api/generate-quiz',
-  SIMPLIFY_CHAPTER: '/api/simplify-chapter',
+export const API_ENDPOINTS = {
+  // Auth
+  AUTH: "/auth",
+  // User
+  USER_ME: "/users/me",
+  // Spaces
+  SPACES: "/spaces",
+  // Invites
+  SPACE_INVITE: "/spaces/invite",
+  // Tasks
+  TASKS: "/tasks",
+  TASKS_STATUS: "/tasks/id/status",
+  // Shopping Lists
+  SHOPPING_LIST: "/shopping",
+  SHOPPING_ITEM_STATUS: "/shopping/id/status",
 };

@@ -1,39 +1,30 @@
+# React + TypeScript + Vite
 
-## SyllabusAI - AI Powered Learning Platform
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-SyllabusAI is an AI powered learning platform that helps individuals to learn anything. It is a web application that uses AI to generate a syllabus for a particular subject. It also generate contents for each chapter in a friendly, easy to understand format. Chapters include functionalities to create quizzes, simplify contents, give examples, and more.
+Currently, two official plugins are available:
 
-Demo
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-![SyllabusAI-Your-AI-Tutor](https://github.com/shehabshalan/syllabus-ai/assets/30008865/d88f6a7c-24e2-4d3f-88f5-d791475e9dc2)
+## Expanding the ESLint configuration
 
+If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
 
+- Configure the top-level `parserOptions` property like this:
 
-https://github.com/shehabshalan/syllabus-ai/assets/30008865/cf2e3b6f-60d5-4981-b9f1-df3ea5ff6af5
+```js
+export default {
+  // other rules...
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+    project: ['./tsconfig.json', './tsconfig.node.json'],
+    tsconfigRootDir: __dirname,
+  },
+}
+```
 
-
-
-
-
-### Installation
-
-1. Clone the repo
-   ```sh
-   git clone
-   ```
-2. Install NPM packages
-   ```sh
-   npm install
-   ```
-3. Run the app
-   ```sh
-   npm run dev
-   ```
-4. Go to localhost:3000
-
-### Built With
-
-- [Next.js](https://nextjs.org/)
-- [shadcn/ui](https://ui.shadcn.com/)
-- [OpenAI](https://openai.com/)
-- [Vercel](https://vercel.com/)
+- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
+- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
+- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list

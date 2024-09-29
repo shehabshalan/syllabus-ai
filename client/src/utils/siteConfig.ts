@@ -1,20 +1,20 @@
 export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
-  name: "SyllabusAI",
+  name: 'SyllabusAI',
   description:
-    "SyllabusAI is a platform for learners powered by AI to teach you anything.",
+    'SyllabusAI is a platform for learners powered by AI to teach you anything.',
   mainNav: [
     {
-      title: "nav.home",
-      href: "/",
+      title: 'Home',
+      href: '/',
     },
     {
-      title: "nav.about",
-      href: "/about",
+      title: 'About',
+      href: '/about',
     },
   ],
   links: {
-    github: "https://github.com/shehabshalan",
+    github: 'https://github.com/shehabshalan',
   },
 };
