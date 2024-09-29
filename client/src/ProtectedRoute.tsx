@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { useGetUser } from './services/useGetUser';
 import { useNavigate } from 'react-router';
-import Loading from './components/ui/Loading';
+import Loading from './components/ui/loading';
 
 const ProtectedRoute = ({ children }: { children: ReactNode }) => {
   const navigate = useNavigate();

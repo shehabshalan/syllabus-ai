@@ -4,12 +4,9 @@ services:
       context: ./client
       dockerfile: Dockerfile
     ports:
-      - '3000:3000'
+      - '5173:5173'
     volumes:
       - ./client:/app
-      - /app/node_modules
-    environment:
-      - CHOKIDAR_USEPOLLING=true
     depends_on:
       - api
     networks:

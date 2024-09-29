@@ -1,8 +1,5 @@
-# Docker for the client which is running next.js
+# Docker for the client which is running react using vite
 FROM node:18-slim
-
-# Set environment variables
-# ENV NODE_ENV=production
 
 # Create the working directory
 WORKDIR /app
@@ -11,13 +8,15 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install the dependencies
+
 RUN npm install
+
 
 # Copy the application files
 COPY . .
 
 # Expose the port
-EXPOSE 3000
+EXPOSE 5173
 
 # Run the application
 CMD ["npm", "run", "dev"]
