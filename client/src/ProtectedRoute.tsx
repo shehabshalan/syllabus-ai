@@ -1,12 +1,11 @@
 import { ReactNode } from 'react';
-import { useGetUser } from './services/useGetUser';
 import { useNavigate } from 'react-router';
 import Loading from './components/ui/loading';
 
 const ProtectedRoute = ({ children }: { children: ReactNode }) => {
   const navigate = useNavigate();
-  const { data, isLoading } = useGetUser();
-
+  const isLoading = false;
+  const data = false;
   if (isLoading) {
     return <Loading />;
   }
