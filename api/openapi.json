@@ -1,0 +1,369 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "SyllabusAI API",
+        "description": "AI powered learning",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/v1/generation/chapters": {
+            "post": {
+                "tags": [
+                    "generation"
+                ],
+                "summary": "Generate Chapters",
+                "operationId": "generate_chapters_api_v1_generation_chapters_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/GenerateChaptersRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GenerateChaptersResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/generation/chapter": {
+            "post": {
+                "tags": [
+                    "generation"
+                ],
+                "summary": "Generate Chapter",
+                "operationId": "generate_chapter_api_v1_generation_chapter_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/GenerateChapterRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GenerateChapterResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/generation/quiz": {
+            "post": {
+                "tags": [
+                    "generation"
+                ],
+                "summary": "Generate Quiz",
+                "operationId": "generate_quiz_api_v1_generation_quiz_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/GenerateQuizRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GenerateQuizResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/internal/health": {
+            "get": {
+                "tags": [
+                    "internal"
+                ],
+                "summary": "Health",
+                "operationId": "health_api_v1_internal_health_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/internal/cache": {
+            "post": {
+                "tags": [
+                    "internal"
+                ],
+                "summary": "Invalidate Cache",
+                "operationId": "invalidate_cache_api_v1_internal_cache_post",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Chapter": {
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "title": "Name"
+                    },
+                    "description": {
+                        "type": "string",
+                        "title": "Description"
+                    },
+                    "slug": {
+                        "type": "string",
+                        "title": "Slug"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "name",
+                    "description",
+                    "slug"
+                ],
+                "title": "Chapter"
+            },
+            "GenerateChapterRequest": {
+                "properties": {
+                    "chapter": {
+                        "type": "string",
+                        "title": "Chapter"
+                    },
+                    "description": {
+                        "type": "string",
+                        "title": "Description"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "chapter",
+                    "description"
+                ],
+                "title": "GenerateChapterRequest"
+            },
+            "GenerateChapterResponse": {
+                "properties": {
+                    "content": {
+                        "type": "string",
+                        "title": "Content"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "content"
+                ],
+                "title": "GenerateChapterResponse"
+            },
+            "GenerateChaptersRequest": {
+                "properties": {
+                    "topic": {
+                        "type": "string",
+                        "title": "Topic"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "topic"
+                ],
+                "title": "GenerateChaptersRequest"
+            },
+            "GenerateChaptersResponse": {
+                "properties": {
+                    "topic": {
+                        "type": "string",
+                        "title": "Topic"
+                    },
+                    "chapters": {
+                        "items": {
+                            "$ref": "#/components/schemas/Chapter"
+                        },
+                        "type": "array",
+                        "title": "Chapters"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "topic",
+                    "chapters"
+                ],
+                "title": "GenerateChaptersResponse"
+            },
+            "GenerateQuizRequest": {
+                "properties": {
+                    "topic": {
+                        "type": "string",
+                        "title": "Topic"
+                    },
+                    "content": {
+                        "type": "string",
+                        "title": "Content"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "topic",
+                    "content"
+                ],
+                "title": "GenerateQuizRequest"
+            },
+            "GenerateQuizResponse": {
+                "properties": {
+                    "questions": {
+                        "items": {
+                            "$ref": "#/components/schemas/Question"
+                        },
+                        "type": "array",
+                        "title": "Questions"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "questions"
+                ],
+                "title": "GenerateQuizResponse"
+            },
+            "HTTPValidationError": {
+                "properties": {
+                    "detail": {
+                        "items": {
+                            "$ref": "#/components/schemas/ValidationError"
+                        },
+                        "type": "array",
+                        "title": "Detail"
+                    }
+                },
+                "type": "object",
+                "title": "HTTPValidationError"
+            },
+            "Question": {
+                "properties": {
+                    "question": {
+                        "type": "string",
+                        "title": "Question"
+                    },
+                    "correctOptionIndex": {
+                        "type": "integer",
+                        "title": "Correctoptionindex"
+                    },
+                    "options": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "title": "Options"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "question",
+                    "correctOptionIndex",
+                    "options"
+                ],
+                "title": "Question"
+            },
+            "ValidationError": {
+                "properties": {
+                    "loc": {
+                        "items": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "integer"
+                                }
+                            ]
+                        },
+                        "type": "array",
+                        "title": "Location"
+                    },
+                    "msg": {
+                        "type": "string",
+                        "title": "Message"
+                    },
+                    "type": {
+                        "type": "string",
+                        "title": "Error Type"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "loc",
+                    "msg",
+                    "type"
+                ],
+                "title": "ValidationError"
+            }
+        }
+    }
+}
