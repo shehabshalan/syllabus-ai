@@ -93,8 +93,10 @@ The subject is an entire chapter provided below. Your task is to thoroughly unde
 ## Formatting:
 Structure your response in JSON format as follows, with multiple questions included:
 
-[
-    {
+{
+    
+    "questions": [
+        {
         "question": "What is a java?",
         "correctOptionIndex": 0,
         "options": ["A programming language", "A coffee", "A tea", "A cup"]
@@ -105,7 +107,9 @@ Structure your response in JSON format as follows, with multiple questions inclu
         "options": ["Option 1", "Option 2", "Option 3", "Option 4"]
     },
     ...
-]
+    ]
+}
+    
 """
 
 GENERATE_SIMPLIFIED_EXPLANATION_SYSTEM_PROMPT = """
