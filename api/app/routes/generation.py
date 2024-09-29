@@ -37,11 +37,11 @@ def generate_chapter(chapter: str, description: str):
 
 
 @router.post("/quiz")
-def generate_quiz(topic: str):
+def generate_quiz(topic: str, content: str):
     llm = LLM(settings)
 
     response = llm.query(
-        user_input=topic,
+        user_input=f"{topic}: {content}",
         system_prompt=GENERATE_QUIZ_SYSTEM_PROMPT,
         format=ResponseFormat.JSON_OBJECT,
     )
