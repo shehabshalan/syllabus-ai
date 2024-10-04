@@ -3,18 +3,18 @@ from typing import Optional
 from sqlalchemy import ForeignKey, create_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
 
-DATABASE_URL = "sqlite:///test.db"
+DATABASE_URL = "sqlite:///:memory:"
 
 
-class NotFoundError(Exception):
-    pass
+engine = create_engine(DATABASE_URL)
+session_maker = sessionmaker(bind=engine)
 
 
 class Base(DeclarativeBase):
     pass
 
 
-class DBUsers(Base):
+class Users(Base):
     __tablename__ = "users"
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
@@ -23,8 +23,11 @@ class DBUsers(Base):
     is_verified: Mapped[bool]
     google_id: Mapped[Optional[str]]
 
+    def __repr__(self):
+        return f"<User(id={self.id}, name={self.name}, email={self.email}, is_verified={self.is_verified})>"
 
-class DBTopics(Base):
+
+class Topics(Base):
     __tablename__ = "topics"
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
@@ -32,8 +35,11 @@ class DBTopics(Base):
     title: Mapped[str]
     progress: Mapped[int] = mapped_column(default=0)
 
+    def __repr__(self):
+        return f"<Topic(id={self.id}, title={self.title}, progress={self.progress})>"
 
-class DBChapters(Base):
+
+class Chapters(Base):
     __tablename__ = "chapters"
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
@@ -43,24 +49,29 @@ class DBChapters(Base):
     is_read: Mapped[bool] = mapped_column(default=False)
     topic_id: Mapped[int] = mapped_column(ForeignKey("topics.id"))
 
+    def __repr__(self):
+        return f"<Chapter(id={self.id}, title={self.title}, content={self.content}, short_description={self.short_description}, is_read={self.is_read})>"
 
-class DBTopicChapters(Base):
+
+class TopicChapters(Base):
     __tablename__ = "topic_chapters"
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
     chapter_id: Mapped[int] = mapped_column(ForeignKey("chapters.id"))
     topic_id: Mapped[int] = mapped_column(ForeignKey("topics.id"))
 
+    def __repr__(self):
+        return f"<TopicChapter(id={self.id}, chapter_id={self.chapter_id}, topic_id={self.topic_id})>"
 
-engine = create_engine(DATABASE_URL)
-session_local = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-Base.metadata.create_all(bind=engine)
+
+def init_db():
+    Base.metadata.create_all(bind=engine)
 
 
 # Dependency to get the database session
-def get_db():
-    database = session_local()
+def get_session():
+    session = session_maker()
     try:
-        yield database
+        yield session
     finally:
-        database.close()
+        session.close()
