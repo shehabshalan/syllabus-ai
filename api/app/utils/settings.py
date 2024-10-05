@@ -7,6 +7,12 @@ class Settings(BaseSettings):
     ORIGINS: list[str]
     GOOGLE_CLIENT_ID: str
     JWT_SECRET_KEY: str
+    DB_DRIVER: str
+    DB_HOST: str
+    DB_PORT: str
+    DB_NAME: str
+    DB_USER: str
+    DB_PASSWORD: str
 
     class Config:
         env_file = ".env"

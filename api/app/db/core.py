@@ -1,11 +1,24 @@
 from typing import Optional
 
-from sqlalchemy import ForeignKey, create_engine
+from app.utils.settings import settings
+from sqlalchemy import URL, ForeignKey, create_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
 
-DATABASE_URL = "sqlite:///:memory:"
+
+def create_db_url():
+    url = URL(
+        drivername=settings.DB_DRIVER,
+        username=settings.DB_USER,
+        password=settings.DB_PASSWORD,
+        host=settings.DB_HOST,
+        port=settings.DB_PORT,
+        database=settings.DB_NAME,
+        query={},
+    )
+    return url
 
 
+DATABASE_URL = create_db_url()
 engine = create_engine(DATABASE_URL)
 session_maker = sessionmaker(bind=engine)
 
@@ -20,8 +33,9 @@ class Users(Base):
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
     name: Mapped[str]
     email: Mapped[str]
-    is_verified: Mapped[bool]
     google_id: Mapped[Optional[str]]
+    picture: Mapped[Optional[str]]
+    is_active: Mapped[bool] = mapped_column(default=True)
 
     def __repr__(self):
         return f"<User(id={self.id}, name={self.name}, email={self.email}, is_verified={self.is_verified})>"
@@ -75,3 +89,7 @@ def get_session():
         yield session
     finally:
         session.close()
+
+
+def model_dump(row):
+    return {c.name: getattr(row, c.name) for c in row.__table__.columns}
