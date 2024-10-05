@@ -1,12 +1,13 @@
 import { useToast } from '../ui/use-toast';
-import { useAuth } from '@/api/useAuth';
 import { ROUTES } from '@/routes/Routes';
-import { useGoogleLogin } from '@react-oauth/google';
+import { TokenResponse, useGoogleLogin } from '@react-oauth/google';
 import { Button } from '../ui/button';
+import { useAuth } from '@/api/apiHooks/user/user';
 
 const LoginWithGoogle = () => {
   const { toast } = useToast();
   const { mutate } = useAuth();
+
   const login = useGoogleLogin({
     onSuccess: (tokenResponse) => {
       handleCallbackResponse(tokenResponse);
@@ -19,23 +20,30 @@ const LoginWithGoogle = () => {
       });
     },
   });
-  const handleCallbackResponse = (response: any) => {
-    const token = response.credential;
-    mutate(token, {
-      onSuccess(data) {
-        if (data.token) {
-          localStorage.setItem('token', data.token);
-          window.location.href = ROUTES.HOME;
-        }
+  const handleCallbackResponse = (response: TokenResponse) => {
+    const token = response.access_token;
+    mutate(
+      {
+        data: {
+          token: token,
+        },
       },
-      onError(e: Error & { response?: any }) {
-        toast({
-          variant: 'destructive',
-          title: e.response?.data?.detail || 'An error occurred',
-          description: 'There was a problem with your request. Try again.',
-        });
-      },
-    });
+      {
+        onSuccess(data) {
+          if (data.token) {
+            localStorage.setItem('token', data.token);
+            window.location.href = ROUTES.HOME;
+          }
+        },
+        onError(e: Error & { response?: any }) {
+          toast({
+            variant: 'destructive',
+            title: e.response?.data?.detail || 'An error occurred',
+            description: 'There was a problem with your request. Try again.',
+          });
+        },
+      }
+    );
   };
 
   return <Button onClick={() => login()}>Sign in</Button>;

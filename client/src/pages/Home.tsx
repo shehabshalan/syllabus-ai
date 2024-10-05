@@ -1,4 +1,4 @@
-import { useGenerateChaptersApiV1GenerationChaptersPost } from '@/api/apiComponents';
+import { useGenerateChapters } from '@/api/apiHooks/llm-generation/llm-generation';
 import { Button } from '@/components/ui/button';
 import Container from '@/components/ui/container';
 import { Input } from '@/components/ui/input';
@@ -7,11 +7,11 @@ import { useState } from 'react';
 
 const Home = () => {
   const [topic, setTopic] = useState('');
-  const { mutate } = useGenerateChaptersApiV1GenerationChaptersPost();
+  const { mutate } = useGenerateChapters();
 
   const handleSubmit = () => {
     mutate({
-      body: {
+      data: {
         topic: topic,
       },
     });
