@@ -1,6 +1,15 @@
+from enum import Enum
 from typing import List
 
 from pydantic import BaseModel
+
+
+class ResponseFormat(str, Enum):
+    TEXT = "text"
+    JSON_OBJECT = "json_object"
+
+    def __str__(self):
+        return self.value
 
 
 class GenerateChaptersRequest(BaseModel):
@@ -40,3 +49,15 @@ class Question(BaseModel):
 
 class GenerateQuizResponse(BaseModel):
     questions: List[Question]
+
+
+class AuthRequest(BaseModel):
+    token: str
+
+
+class UserResponse(BaseModel):
+    email: str
+    name: str
+    is_active: bool
+    token: str
+    picture: str | None = None

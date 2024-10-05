@@ -3,7 +3,8 @@ import json
 import diskcache
 from openai import OpenAI
 
-from app.utils.settings import ResponseFormat, Settings
+from app.utils.schema import ResponseFormat
+from app.utils.settings import Settings
 
 
 class LLM:

@@ -1,20 +1,12 @@
-from enum import Enum
-
 from pydantic_settings import BaseSettings
-
-
-class ResponseFormat(str, Enum):
-    TEXT = "text"
-    JSON_OBJECT = "json_object"
-
-    def __str__(self):
-        return self.value
 
 
 class Settings(BaseSettings):
     OPENAI_API_KEY: str
     MODEL: str
-    API_V1_STR: str
+    ORIGINS: list[str]
+    GOOGLE_CLIENT_ID: str
+    JWT_SECRET_KEY: str
 
     class Config:
         env_file = ".env"
