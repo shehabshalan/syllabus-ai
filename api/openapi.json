@@ -6,13 +6,54 @@
         "version": "1.0.0"
     },
     "paths": {
-        "/api/v1/generation/chapters": {
+        "/user/auth": {
             "post": {
                 "tags": [
-                    "generation"
+                    "User"
+                ],
+                "summary": "Auth",
+                "operationId": "auth",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AuthRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/generation/chapters": {
+            "post": {
+                "tags": [
+                    "LLM Generation"
                 ],
                 "summary": "Generate Chapters",
-                "operationId": "generate_chapters_api_v1_generation_chapters_post",
+                "operationId": "generate_chapters",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -47,13 +88,13 @@
                 }
             }
         },
-        "/api/v1/generation/chapter": {
+        "/generation/chapter": {
             "post": {
                 "tags": [
-                    "generation"
+                    "LLM Generation"
                 ],
                 "summary": "Generate Chapter",
-                "operationId": "generate_chapter_api_v1_generation_chapter_post",
+                "operationId": "generate_chapter",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -88,13 +129,13 @@
                 }
             }
         },
-        "/api/v1/generation/quiz": {
+        "/generation/quiz": {
             "post": {
                 "tags": [
-                    "generation"
+                    "LLM Generation"
                 ],
                 "summary": "Generate Quiz",
-                "operationId": "generate_quiz_api_v1_generation_quiz_post",
+                "operationId": "generate_quiz",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -129,13 +170,13 @@
                 }
             }
         },
-        "/api/v1/internal/health": {
+        "/internal/health": {
             "get": {
                 "tags": [
-                    "internal"
+                    "Internal"
                 ],
                 "summary": "Health",
-                "operationId": "health_api_v1_internal_health_get",
+                "operationId": "health",
                 "responses": {
                     "200": {
                         "description": "Successful Response",
@@ -148,13 +189,13 @@
                 }
             }
         },
-        "/api/v1/internal/cache": {
+        "/internal/cache": {
             "post": {
                 "tags": [
-                    "internal"
+                    "Internal"
                 ],
                 "summary": "Invalidate Cache",
-                "operationId": "invalidate_cache_api_v1_internal_cache_post",
+                "operationId": "invalidate_cache",
                 "responses": {
                     "200": {
                         "description": "Successful Response",
@@ -170,6 +211,19 @@
     },
     "components": {
         "schemas": {
+            "AuthRequest": {
+                "properties": {
+                    "token": {
+                        "type": "string",
+                        "title": "Token"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "token"
+                ],
+                "title": "AuthRequest"
+            },
             "Chapter": {
                 "properties": {
                     "name": {
@@ -330,6 +384,45 @@
                     "options"
                 ],
                 "title": "Question"
+            },
+            "UserResponse": {
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "title": "Email"
+                    },
+                    "name": {
+                        "type": "string",
+                        "title": "Name"
+                    },
+                    "is_active": {
+                        "type": "boolean",
+                        "title": "Is Active"
+                    },
+                    "token": {
+                        "type": "string",
+                        "title": "Token"
+                    },
+                    "picture": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Picture"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "email",
+                    "name",
+                    "is_active",
+                    "token"
+                ],
+                "title": "UserResponse"
             },
             "ValidationError": {
                 "properties": {
