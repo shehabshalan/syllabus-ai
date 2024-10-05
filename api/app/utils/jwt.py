@@ -16,7 +16,6 @@ def generate_access_token(data: dict):
             raise ValueError("No secret key configured for JWT")
 
         to_encode = data.copy()
-        print(to_encode)
         expire = datetime.now() + timedelta(hours=ACCESS_TOKEN_EXPIRE_MINUTES)
         to_encode.update({"exp": expire})
         encoded_jwt = jwt.encode(
