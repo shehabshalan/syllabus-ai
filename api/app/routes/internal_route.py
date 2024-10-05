@@ -1,15 +1,15 @@
 import diskcache
 from fastapi import APIRouter
 
-router = APIRouter(prefix="/internal", tags=["internal"])
+router = APIRouter(prefix="/internal", tags=["Internal"])
 
 
-@router.get("/health")
+@router.get("/health", operation_id="health")
 def health():
     return {"status": "ok"}
 
 
-@router.post("/cache")
+@router.post("/cache", operation_id="invalidate_cache")
 def invalidate_cache():
     cache = diskcache.Cache("cache")
     cache.clear()

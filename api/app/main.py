@@ -4,9 +4,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.db.core import init_db
-from app.routes.auth_route import router as auth_router
 from app.routes.generation_route import router as generation_router
 from app.routes.internal_route import router as internal_router
+from app.routes.user_route import router as user_router
 from app.utils.settings import settings
 
 
@@ -28,6 +28,6 @@ app.add_middleware(
 )
 
 
-app.include_router(auth_router)
+app.include_router(user_router)
 app.include_router(generation_router)
 app.include_router(internal_router)
