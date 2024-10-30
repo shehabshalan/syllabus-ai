@@ -59,5 +59,5 @@ class UserResponse(BaseModel):
     email: str
     name: str
     is_active: bool
-    token: str
+    token: str | None = None
     picture: str | None = None

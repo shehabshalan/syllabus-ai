@@ -6,11 +6,12 @@
  * OpenAPI spec version: 1.0.0
  */
 import type { UserResponsePicture } from './userResponsePicture';
+import type { UserResponseToken } from './userResponseToken';
 
 export interface UserResponse {
   email: string;
   is_active: boolean;
   name: string;
   picture?: UserResponsePicture;
-  token: string;
+  token?: UserResponseToken;
 }

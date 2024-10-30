@@ -1,5 +1,5 @@
 from app.db.core import Users, model_dump
-from app.utils.jwt import generate_access_token, verify_google_token
+from app.utils.jwt import generate_access_token, verify_google_token, verify_token
 from app.utils.schema import UserResponse
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
@@ -30,3 +30,8 @@ async def auth_user(token: str, session: Session) -> UserResponse:
     user = model_dump(user)
     token = generate_access_token(user)
     return UserResponse(**user, token=token)
+
+
+async def get_user(token: str) -> UserResponse:
+    user_info = verify_token(token)
+    return UserResponse(**user_info)

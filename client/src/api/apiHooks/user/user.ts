@@ -6,12 +6,20 @@
  * OpenAPI spec version: 1.0.0
  */
 import {
-  useMutation
+  useMutation,
+  useQuery
 } from '@tanstack/react-query'
 import type {
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
+  QueryFunction,
+  QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
-  UseMutationResult
+  UseMutationResult,
+  UseQueryOptions,
+  UseQueryResult
 } from '@tanstack/react-query'
 import type {
   AuthRequest,
@@ -82,4 +90,90 @@ export const useAuth = <TError = ErrorType<HTTPValidationError>,
 
       return useMutation(mutationOptions);
     }
+    /**
+ * @summary Me
+ */
+export const me = (
     
+ options?: SecondParameter<typeof apiFetcher>,signal?: AbortSignal
+) => {
+      
+      
+      return apiFetcher<UserResponse>(
+      {url: `/user/me`, method: 'GET', signal
+    },
+      options);
+    }
+  
+
+export const getMeQueryKey = () => {
+    return [`/user/me`] as const;
+    }
+
+    
+export const getMeQueryOptions = <TData = Awaited<ReturnType<typeof me>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof me>>, TError, TData>>, request?: SecondParameter<typeof apiFetcher>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getMeQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof me>>> = ({ signal }) => me(requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof me>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type MeQueryResult = NonNullable<Awaited<ReturnType<typeof me>>>
+export type MeQueryError = ErrorType<unknown>
+
+
+export function useMe<TData = Awaited<ReturnType<typeof me>>, TError = ErrorType<unknown>>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof me>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof me>>,
+          TError,
+          TData
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetcher>}
+
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey }
+export function useMe<TData = Awaited<ReturnType<typeof me>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof me>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof me>>,
+          TError,
+          TData
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetcher>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey }
+export function useMe<TData = Awaited<ReturnType<typeof me>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof me>>, TError, TData>>, request?: SecondParameter<typeof apiFetcher>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey }
+/**
+ * @summary Me
+ */
+
+export function useMe<TData = Awaited<ReturnType<typeof me>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof me>>, TError, TData>>, request?: SecondParameter<typeof apiFetcher>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getMeQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+

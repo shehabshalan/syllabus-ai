@@ -4,6 +4,8 @@ import { NavItem } from '@/utils/types';
 import { Link, useLocation } from 'react-router-dom';
 import { ThemeToggle } from '../ThemeToggle/ThemeToggle';
 import LoginWithGoogle from './LoginWithGoogle';
+import { useMe } from '@/api/apiHooks/user/user';
+import { getToken } from '@/utils/utils';
 
 interface MainNavProps {
   items?: NavItem[];
@@ -11,6 +13,12 @@ interface MainNavProps {
 
 export function MainNav({ items }: MainNavProps) {
   const location = useLocation();
+  const { isLoading, data } = useMe({
+    query: {
+      enabled: getToken() ? true : false,
+    },
+  });
+
   return (
     <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
       <Link to="/" className="flex items-center space-x-2">
@@ -39,7 +47,13 @@ export function MainNav({ items }: MainNavProps) {
       ) : null}
       <div className="flex items-center gap-4">
         <ThemeToggle />
-        <LoginWithGoogle />
+        {isLoading ? null : data ? (
+          <Link to="/profile" className="text-sm font-medium">
+            Profile
+          </Link>
+        ) : (
+          <LoginWithGoogle />
+        )}
       </div>
     </div>
   );

@@ -18,5 +18,6 @@ export * from './hTTPValidationError';
 export * from './question';
 export * from './userResponse';
 export * from './userResponsePicture';
+export * from './userResponseToken';
 export * from './validationError';
 export * from './validationErrorLocItem';

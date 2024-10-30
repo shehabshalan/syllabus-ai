@@ -76,10 +76,12 @@ def verify_token(token: str):
     payload = None
     try:
         payload = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[ALGORITHM])
-    except JWTError as e:
-        print(e)
-    except AssertionError as e:
-        print(e)
+    except JWTError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid credentials",
+        )
+
     if payload is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

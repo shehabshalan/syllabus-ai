@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, Request, status
 from sqlalchemy.orm import Session
 
 from app.db.core import get_session
@@ -18,3 +18,9 @@ async def auth(
     request: AuthRequest, session: Session = Depends(get_session)
 ) -> UserResponse:
     return await user_service.auth_user(request.token, session)
+
+
+@router.get("/me", response_model=UserResponse, operation_id="me")
+async def me(request: Request) -> UserResponse:
+    token = request.headers.get("Authorization")
+    return await user_service.get_user(token)

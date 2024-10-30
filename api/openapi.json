@@ -47,6 +47,27 @@
                 }
             }
         },
+        "/user/me": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Me",
+                "operationId": "me",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/generation/chapters": {
             "post": {
                 "tags": [
@@ -400,7 +421,14 @@
                         "title": "Is Active"
                     },
                     "token": {
-                        "type": "string",
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
                         "title": "Token"
                     },
                     "picture": {
@@ -419,8 +447,7 @@
                 "required": [
                     "email",
                     "name",
-                    "is_active",
-                    "token"
+                    "is_active"
                 ],
                 "title": "UserResponse"
             },
