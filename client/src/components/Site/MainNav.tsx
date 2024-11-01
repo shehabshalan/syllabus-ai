@@ -13,11 +13,15 @@ interface MainNavProps {
 
 export function MainNav({ items }: MainNavProps) {
   const location = useLocation();
-  const { isLoading, data } = useMe({
+  const { isLoading, data, error } = useMe({
     query: {
       enabled: getToken() ? true : false,
     },
   });
+
+  if (error) {
+    localStorage.getItem('token') && localStorage.removeItem('token');
+  }
 
   return (
     <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
