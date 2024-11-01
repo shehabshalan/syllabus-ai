@@ -1,8 +1,8 @@
 from datetime import datetime, timedelta
 
+import jwt
 import requests
 from fastapi import HTTPException, status
-from jose import JWTError, jwt
 
 from app.utils.settings import settings
 
@@ -22,7 +22,7 @@ def generate_access_token(data: dict):
             to_encode, settings.JWT_SECRET_KEY, algorithm=ALGORITHM
         )
         return encoded_jwt
-    except JWTError:
+    except Exception:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Failed to generate access token",
@@ -76,7 +76,7 @@ def verify_token(token: str):
     payload = None
     try:
         payload = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[ALGORITHM])
-    except JWTError:
+    except jwt.ExpiredSignatureError:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid credentials",
