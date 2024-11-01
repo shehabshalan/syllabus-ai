@@ -1,4 +1,5 @@
 import { useGenerateChapters } from '@/api/apiHooks/llm-generation/llm-generation';
+import { useSearchLimit } from '@/components/hooks/useSearchLimit';
 import { Button } from '@/components/ui/button';
 import Container from '@/components/ui/container';
 import { Input } from '@/components/ui/input';
@@ -7,17 +8,24 @@ import { useState } from 'react';
 
 const Home = () => {
   const [topic, setTopic] = useState('');
-  const { mutate } = useGenerateChapters();
+  const { mutateAsync: generateChatpers } = useGenerateChapters();
 
-  const handleSubmit = () => {
-    mutate({
-      data: {
-        topic: topic,
+  const { incrementSearchCount, searchCount } = useSearchLimit();
+  const handleSubmit = async () => {
+    await generateChatpers(
+      {
+        data: {
+          topic: topic,
+        },
       },
-    });
+      {
+        onSuccess: () => {
+          incrementSearchCount();
+        },
+      }
+    );
   };
 
-  const searchCount = 0;
   return (
     <Container className=" mt-12 gap-6 pb-8 pt-6 md:py-10">
       {searchCount < 5 ? (
@@ -27,7 +35,7 @@ const Home = () => {
           </h1>
 
           <p>
-            (0/<span className="font-bold ">5</span>) Queries
+            ({searchCount}/<span className="font-bold ">5</span>) Queries
           </p>
           <div className="flex w-full items-center space-x-2">
             <div className="relative flex-grow">
