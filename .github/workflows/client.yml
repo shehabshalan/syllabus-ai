@@ -42,6 +42,10 @@ jobs:
       - name: Build
         run: npm run build
         working-directory: ./client
+        env:
+          VITE_GOOGLE_CLIENT_ID: ${{ secrets.VITE_GOOGLE_CLIENT_ID }}
+          VITE_PROD_BASE_URL: ${{ secrets.VITE_PROD_BASE_URL }}
+          VITE_DEV_BASE_URL: ${{ secrets.VITE_DEV_BASE_URL }}
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact
