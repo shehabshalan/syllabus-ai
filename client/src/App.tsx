@@ -23,11 +23,7 @@ const App = () => {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
         <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
-          <BrowserRouter
-            basename={
-              import.meta.env.MODE === 'development' ? '/' : '/syllabus-ai/'
-            }
-          >
+          <BrowserRouter basename={'/syllabus-ai/'}>
             <SiteHeader />
             <Router />
             <Toaster />
