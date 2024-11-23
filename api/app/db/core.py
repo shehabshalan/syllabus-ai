@@ -13,7 +13,7 @@ def create_db_url():
         host=settings.DB_HOST,
         port=settings.DB_PORT,
         database=settings.DB_NAME,
-        query={},
+        query={},  # type: ignore
     )
     return url
 
@@ -38,7 +38,7 @@ class Users(Base):
     is_active: Mapped[bool] = mapped_column(default=True)
 
     def __repr__(self):
-        return f"<User(id={self.id}, name={self.name}, email={self.email}, is_verified={self.is_verified})>"
+        return f"<User(id={self.id}, name={self.name}, email={self.email})>"
 
 
 class Topics(Base):

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Request, status
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 from sqlalchemy.orm import Session
 
 from app.db.core import get_session
@@ -23,4 +23,6 @@ async def auth(
 @router.get("/me", response_model=UserResponse, operation_id="me")
 async def me(request: Request) -> UserResponse:
     token = request.headers.get("Authorization")
+    if not token:
+        raise HTTPException(status_code=401, detail="Unauthorized")
     return await user_service.get_user(token)

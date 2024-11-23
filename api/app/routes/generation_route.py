@@ -1,3 +1,5 @@
+from baml_client.sync_client import b
+from baml_client.types import Chapters
 from fastapi import APIRouter
 
 from app.prompts import (
@@ -20,14 +22,7 @@ router = APIRouter(prefix="/generation", tags=["LLM Generation"])
 def generate_chapters(
     request: schema.GenerateChaptersRequest,
 ) -> schema.GenerateChaptersResponse:
-    llm = LLM(settings)
-
-    response = llm.query(
-        user_input=request.topic,
-        system_prompt=GENERATE_CHAPTERS_SYSTEM_PROMPT,
-        format=schema.ResponseFormat.JSON_OBJECT,
-    )
-
+    response = b.GenerateChapers(request.topic)
     return schema.GenerateChaptersResponse(**response)
 
 
