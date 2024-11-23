@@ -1,10 +1,13 @@
+import os
+
+import dotenv
+from baml_client import reset_baml_env_vars
 from baml_client.sync_client import b
 from baml_client.types import Chapters
 from fastapi import APIRouter
 
 from app.prompts import (
     GENERATE_CHAPTER_CONTENT_SYSTEM_PROMPT,
-    GENERATE_CHAPTERS_SYSTEM_PROMPT,
     GENERATE_QUIZ_SYSTEM_PROMPT,
 )
 from app.utils import schema
@@ -12,6 +15,8 @@ from app.utils.llm import LLM
 from app.utils.settings import settings
 
 router = APIRouter(prefix="/generation", tags=["LLM Generation"])
+dotenv.load_dotenv()
+reset_baml_env_vars(dict(os.environ))
 
 
 @router.post(
@@ -21,9 +26,9 @@ router = APIRouter(prefix="/generation", tags=["LLM Generation"])
 )
 def generate_chapters(
     request: schema.GenerateChaptersRequest,
-) -> schema.GenerateChaptersResponse:
+) -> Chapters:
     response = b.GenerateChapers(request.topic)
-    return schema.GenerateChaptersResponse(**response)
+    return response
 
 
 @router.post(
