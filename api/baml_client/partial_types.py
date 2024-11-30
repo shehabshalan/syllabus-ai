@@ -32,6 +32,11 @@ from .types import Checked, Check
 class Chapter(BaseModel):
     
     
+    content: Optional[str] = None
+
+class ChapterOutline(BaseModel):
+    
+    
     name: Optional[str] = None
     description: Optional[str] = None
     slug: Optional[str] = None
@@ -40,4 +45,4 @@ class Chapters(BaseModel):
     
     
     topic: Optional[str] = None
-    chapters: List["Chapter"]
+    chapters: List["ChapterOutline"]

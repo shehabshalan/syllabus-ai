@@ -21,13 +21,13 @@ reset_baml_env_vars(dict(os.environ))
 
 @router.post(
     "/chapters",
-    response_model=schema.GenerateChaptersResponse,
+    response_model=Chapters,
     operation_id="generate_chapters",
 )
 def generate_chapters(
     request: schema.GenerateChaptersRequest,
 ) -> Chapters:
-    response = b.GenerateChapers(request.topic)
+    response = b.GenerateChapters(request.topic)
     return response
 
 
@@ -39,14 +39,8 @@ def generate_chapters(
 def generate_chapter(
     request: schema.GenerateChapterRequest,
 ) -> schema.GenerateChapterResponse:
-    llm = LLM(settings)
-
-    response = llm.query(
-        user_input=f"{request.chapter}: {request.description}",
-        system_prompt=GENERATE_CHAPTER_CONTENT_SYSTEM_PROMPT,
-    )
-
-    return schema.GenerateChapterResponse(content=response)
+    response = b.GenerateChapter(f"{request.chapter}: {request.description}")
+    return response
 
 
 @router.post(

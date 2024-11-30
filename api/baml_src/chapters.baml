@@ -1,7 +1,7 @@
 // Defining a data model.
 
 
-class Chapter{
+class ChapterOutline {
   name string
   description string
   slug string
@@ -10,12 +10,12 @@ class Chapter{
 
 class Chapters {
   topic string
-  chapters Chapter[]
+  chapters ChapterOutline[]
 }
 
 
 // Create a function to generate rough chapters outline for learning about a topic
-function GenerateChapers(topic: string) -> Chapters {
+function GenerateChapters(topic: string) -> Chapters {
   // Specify a client as provider/model-name
   // you can use custom LLM params with a custom client name from clients.baml like "client CustomHaiku"
   client "google-ai/gemini-1.5-flash-latest" // Set GOOGLE_API_KEY to use this client.
@@ -28,8 +28,8 @@ function GenerateChapers(topic: string) -> Chapters {
 }
 
 // Test the function with a sample resume. Open the VSCode playground to run this.
-test chapter_generation {
-  functions [GenerateChapers]
+test chapters_generation {
+  functions [GenerateChapters]
   args {
     topic #"
         JavaScript

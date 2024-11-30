@@ -47,7 +47,30 @@ class BamlSyncClient:
       return self.__stream_client
 
     
-    def GenerateChapers(
+    def GenerateChapter(
+        self,
+        chapter: str,description: str,
+        baml_options: BamlCallOptions = {},
+    ) -> types.Chapter:
+      __tb__ = baml_options.get("tb", None)
+      if __tb__ is not None:
+        tb = __tb__._tb # type: ignore (we know how to use this private attribute)
+      else:
+        tb = None
+      __cr__ = baml_options.get("client_registry", None)
+
+      raw = self.__runtime.call_function_sync(
+        "GenerateChapter",
+        {
+          "chapter": chapter,"description": description,
+        },
+        self.__ctx_manager.get(),
+        tb,
+        __cr__,
+      )
+      return cast(types.Chapter, raw.cast_to(types, types))
+    
+    def GenerateChapters(
         self,
         topic: str,
         baml_options: BamlCallOptions = {},
@@ -60,7 +83,7 @@ class BamlSyncClient:
       __cr__ = baml_options.get("client_registry", None)
 
       raw = self.__runtime.call_function_sync(
-        "GenerateChapers",
+        "GenerateChapters",
         {
           "topic": topic,
         },
@@ -82,7 +105,38 @@ class BamlStreamClient:
       self.__ctx_manager = ctx_manager
 
     
-    def GenerateChapers(
+    def GenerateChapter(
+        self,
+        chapter: str,description: str,
+        baml_options: BamlCallOptions = {},
+    ) -> baml_py.BamlSyncStream[partial_types.Chapter, types.Chapter]:
+      __tb__ = baml_options.get("tb", None)
+      if __tb__ is not None:
+        tb = __tb__._tb # type: ignore (we know how to use this private attribute)
+      else:
+        tb = None
+      __cr__ = baml_options.get("client_registry", None)
+
+      raw = self.__runtime.stream_function_sync(
+        "GenerateChapter",
+        {
+          "chapter": chapter,
+          "description": description,
+        },
+        None,
+        self.__ctx_manager.get(),
+        tb,
+        __cr__,
+      )
+
+      return baml_py.BamlSyncStream[partial_types.Chapter, types.Chapter](
+        raw,
+        lambda x: cast(partial_types.Chapter, x.cast_to(types, partial_types)),
+        lambda x: cast(types.Chapter, x.cast_to(types, types)),
+        self.__ctx_manager.get(),
+      )
+    
+    def GenerateChapters(
         self,
         topic: str,
         baml_options: BamlCallOptions = {},
@@ -95,7 +149,7 @@ class BamlStreamClient:
       __cr__ = baml_options.get("client_registry", None)
 
       raw = self.__runtime.stream_function_sync(
-        "GenerateChapers",
+        "GenerateChapters",
         {
           "topic": topic,
         },
