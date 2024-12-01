@@ -40,19 +40,13 @@ def all_succeeded(checks: Dict[CheckName, Check]) -> bool:
 
 
 class Chapter(BaseModel):
-    
-    
     content: str
 
 class ChapterOutline(BaseModel):
-    
-    
     name: str
     description: str
     slug: str
 
 class Chapters(BaseModel):
-    
-    
     topic: str
     chapters: List["ChapterOutline"]

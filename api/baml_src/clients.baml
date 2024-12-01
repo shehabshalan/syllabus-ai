@@ -29,7 +29,7 @@ client<llm> CustomGemini {
   provider google-ai
   options {
     model "gemini-1.5-flash-latest"
-    api_key "AIzaSyAnxoxYW7QtYT54iCobqtQwVlUR5tUNS-c"
+    api_key  env.GOOGLE_API_KEY
   }
 }
 
