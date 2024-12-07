@@ -28,9 +28,14 @@ const Home = () => {
   } = useGenerateChapters();
 
   const handleSubmit = async () => {
+    if (!topic || !user) {
+      return;
+    }
+
     await generateChatpers({
       data: {
         topic: topic,
+        user_id: user?.id,
       },
     });
   };
