@@ -2,6 +2,7 @@ import { generatePath } from 'react-router';
 
 export const ROUTES = {
   HOME: '/',
+  CHAPTER: '/chapter/:slug',
   ABOUT: '/about',
   AUTH: '/auth',
   NOT_FOUND: '/not-found',
