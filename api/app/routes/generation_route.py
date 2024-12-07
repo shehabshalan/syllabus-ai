@@ -4,8 +4,10 @@ import dotenv
 from baml_client import reset_baml_env_vars
 from baml_client.sync_client import b
 from baml_client.types import Chapters
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
 
+from app.db import core
 from app.prompts import (
     GENERATE_CHAPTER_CONTENT_SYSTEM_PROMPT,
     GENERATE_QUIZ_SYSTEM_PROMPT,
@@ -26,8 +28,26 @@ reset_baml_env_vars(dict(os.environ))
 )
 def generate_chapters(
     request: schema.GenerateChaptersRequest,
+    session: Session = Depends(core.get_session),
 ) -> Chapters:
     response = b.GenerateChapters(request.topic)
+    # save to db
+    topic = core.create_topic(
+        session=session, user_id=request.user_id, title=request.topic
+    )
+    print("topic", topic)
+    # Convert Pydantic model to dictionary
+    response_dict = response.model_dump()
+    chapters = response_dict.get("chapters", [])
+
+    for chapter in chapters:
+        core.create_chapter(
+            session=session,
+            topic_id=topic["id"],
+            title=chapter["name"],
+            short_description=chapter["description"],
+        )
+
     return response
 
 

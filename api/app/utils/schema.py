@@ -13,6 +13,7 @@ class ResponseFormat(str, Enum):
 
 
 class GenerateChaptersRequest(BaseModel):
+    user_id: int
     topic: str
 
 
@@ -56,6 +57,7 @@ class AuthRequest(BaseModel):
 
 
 class UserResponse(BaseModel):
+    id: int
     email: str
     name: str
     is_active: bool
