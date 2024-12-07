@@ -5,9 +5,9 @@
  * AI powered learning
  * OpenAPI spec version: 1.0.0
  */
+import type { ChapterOutline } from './chapterOutline';
 
-export interface Question {
-  correctOptionIndex: number;
-  options: string[];
-  question: string;
+export interface Chapters {
+  chapters: ChapterOutline[];
+  topic: string;
 }

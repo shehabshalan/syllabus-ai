@@ -6,8 +6,8 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export interface Question {
-  correctOptionIndex: number;
-  options: string[];
-  question: string;
+export interface ChapterOutline {
+  description: string;
+  name: string;
+  slug: string;
 }
