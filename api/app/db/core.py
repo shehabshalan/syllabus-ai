@@ -1,8 +1,8 @@
 from typing import Optional
 
 from app.utils.settings import settings
-from sqlalchemy import URL, ForeignKey, create_engine
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
+from sqlalchemy import URL, Boolean, ForeignKey, Integer, String, Text, create_engine
+from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column, sessionmaker
 
 
 def create_db_url():
@@ -31,11 +31,11 @@ class Users(Base):
     __tablename__ = "users"
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
-    name: Mapped[str]
-    email: Mapped[str]
-    google_id: Mapped[Optional[str]]
-    picture: Mapped[Optional[str]]
-    is_active: Mapped[bool] = mapped_column(default=True)
+    name: Mapped[str] = mapped_column(String(100), nullable=False)
+    email: Mapped[str] = mapped_column(String(255), unique=True, nullable=False)
+    google_id: Mapped[Optional[str]] = mapped_column(String(255), unique=True)
+    picture: Mapped[Optional[str]] = mapped_column(String(255))
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True)
 
     def __repr__(self):
         return f"<User(id={self.id}, name={self.name}, email={self.email})>"
@@ -45,9 +45,9 @@ class Topics(Base):
     __tablename__ = "topics"
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
-    title: Mapped[str]
-    progress: Mapped[int] = mapped_column(default=0)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
+    title: Mapped[str] = mapped_column(String(255), nullable=False)
+    progress: Mapped[int] = mapped_column(Integer, default=0)
 
     def __repr__(self):
         return f"<Topic(id={self.id}, title={self.title}, progress={self.progress})>"
@@ -57,25 +57,52 @@ class Chapters(Base):
     __tablename__ = "chapters"
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
-    title: Mapped[str]
-    content: Mapped[str]
-    short_description: Mapped[str]
-    is_read: Mapped[bool] = mapped_column(default=False)
-    topic_id: Mapped[int] = mapped_column(ForeignKey("topics.id"))
+    topic_id: Mapped[int] = mapped_column(ForeignKey("topics.id"), nullable=False)
+    title: Mapped[str] = mapped_column(String(255), nullable=False)
+    short_description: Mapped[str] = mapped_column(Text, nullable=True)
+    content: Mapped[str] = mapped_column(Text, nullable=True)
+    is_read: Mapped[bool] = mapped_column(Boolean, default=False)
 
     def __repr__(self):
-        return f"<Chapter(id={self.id}, title={self.title}, content={self.content}, short_description={self.short_description}, is_read={self.is_read})>"
+        return f"<Chapter(id={self.id}, title={self.title})>"
 
 
-class TopicChapters(Base):
-    __tablename__ = "topic_chapters"
+class ChapterSimplifiedVersions(Base):
+    __tablename__ = "chapter_simplified_versions"
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
-    chapter_id: Mapped[int] = mapped_column(ForeignKey("chapters.id"))
-    topic_id: Mapped[int] = mapped_column(ForeignKey("topics.id"))
+    chapter_id: Mapped[int] = mapped_column(ForeignKey("chapters.id"), nullable=False)
+    simplified_content: Mapped[str] = mapped_column(Text, nullable=True)
 
     def __repr__(self):
-        return f"<TopicChapter(id={self.id}, chapter_id={self.chapter_id}, topic_id={self.topic_id})>"
+        return f"<ChapterSimplifiedVersion(id={self.id}, chapter_id={self.chapter_id})>"
+
+
+class Flashcards(Base):
+    __tablename__ = "flashcards"
+
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    chapter_id: Mapped[int] = mapped_column(ForeignKey("chapters.id"), nullable=False)
+    question: Mapped[str] = mapped_column(Text, nullable=False)
+    answer: Mapped[str] = mapped_column(Text, nullable=False)
+
+    def __repr__(self):
+        return f"<Flashcard(id={self.id}, chapter_id={self.chapter_id}, question={self.question})>"
+
+
+class Quizzes(Base):
+    __tablename__ = "quizzes"
+
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    chapter_id: Mapped[int] = mapped_column(ForeignKey("chapters.id"), nullable=False)
+    question: Mapped[str] = mapped_column(Text, nullable=False)
+    possible_answers: Mapped[str] = mapped_column(
+        Text, nullable=True
+    )  # Could store JSON as text
+    correct_answer: Mapped[str] = mapped_column(Text, nullable=True)
+
+    def __repr__(self):
+        return f"<Quiz(id={self.id}, chapter_id={self.chapter_id}, question={self.question})>"
 
 
 def init_db():
@@ -93,3 +120,23 @@ def get_session():
 
 def model_dump(row):
     return {c.name: getattr(row, c.name) for c in row.__table__.columns}
+
+
+def create_topic(session: Session, user_id: int, title: str) -> Topics:
+    new_topic = Topics(user_id=user_id, title=title)
+    session.add(new_topic)
+    session.commit()
+    session.refresh(new_topic)
+    return model_dump(new_topic)
+
+
+def create_chapter(
+    session: Session, topic_id: int, title: str, short_description: str
+) -> Chapters:
+    new_chapter = Chapters(
+        topic_id=topic_id, title=title, short_description=short_description, content=""
+    )
+    session.add(new_chapter)
+    session.commit()
+    session.refresh(new_chapter)
+    return model_dump(new_chapter)
