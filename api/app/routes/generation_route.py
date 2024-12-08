@@ -35,17 +35,14 @@ def generate_chapters(
     topic = core.create_topic(
         session=session, user_id=request.user_id, title=request.topic
     )
-    print("topic", topic)
-    # Convert Pydantic model to dictionary
-    response_dict = response.model_dump()
-    chapters = response_dict.get("chapters", [])
+    chapters = response.chapters
 
     for chapter in chapters:
         core.create_chapter(
             session=session,
             topic_id=topic["id"],
-            title=chapter["name"],
-            short_description=chapter["description"],
+            title=chapter.name,
+            short_description=chapter.description,
         )
 
     return response
