@@ -17,6 +17,13 @@ import { Sparkles } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
+const HINT_TOPICS = [
+  'Javascript',
+  'Philosophy',
+  'Music Theory',
+  'Writing Fiction',
+];
+
 const Home = () => {
   const navigate = useNavigate();
   const [topic, setTopic] = useState('');
@@ -80,9 +87,25 @@ const Home = () => {
               )}
             </div>
           </div>
-          <p className="text-sm text-muted-foreground">
-            Hint: Try topics like “Programming”, “Philosophy“, or “Music Theory”
-          </p>
+          <p className="text-sm text-muted-foreground">Hint: Try topics</p>
+          <div className="flex gap-2">
+            {HINT_TOPICS.map((hint, index) => (
+              <Button
+                key={index}
+                variant={topic === hint ? 'outline' : 'ghost'}
+                onClick={() => {
+                  if (topic === hint) {
+                    setTopic('');
+                    return;
+                  }
+                  setTopic(hint);
+                }}
+                disabled={isPending}
+              >
+                {hint}
+              </Button>
+            ))}
+          </div>
         </>
       </div>
       {data && data?.chapters.length > 0 && (
