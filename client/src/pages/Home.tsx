@@ -1,7 +1,6 @@
 import { useGenerateChapters } from '@/api/apiHooks/llm-generation/llm-generation';
 import { useMe } from '@/api/apiHooks/user/user';
 import AuthWrapper from '@/components/AuthWrapper/AuthWrapper';
-import { useSearchLimit } from '@/components/hooks/useSearchLimit';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -13,6 +12,7 @@ import {
 } from '@/components/ui/card';
 import Container from '@/components/ui/container';
 import { Input } from '@/components/ui/input';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { Sparkles } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
@@ -108,6 +108,8 @@ const Home = () => {
           </div>
         </>
       </div>
+
+      {isPending && <LoadingSpinner />}
       {data && data?.chapters.length > 0 && (
         <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4 p-4">
           {data?.chapters.map((chapter, index) => (
