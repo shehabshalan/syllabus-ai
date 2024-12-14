@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 from sqlalchemy.orm import Session
 
-from app.db.core import get_session
+from app.db import get_session
 from app.services import user_service
 from app.utils.schema import AuthRequest, UserResponse
 
@@ -26,3 +26,11 @@ async def me(request: Request) -> UserResponse:
     if not token:
         raise HTTPException(status_code=401, detail="Unauthorized")
     return await user_service.get_user(token)
+
+
+@router.get("/chapters", operation_id="get_chapters")
+async def get_chapters(request: Request):
+    token = request.headers.get("Authorization")
+    if not token:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    return await user_service.get_chapters(token)

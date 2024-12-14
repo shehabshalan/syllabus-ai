@@ -1,8 +1,9 @@
 from typing import Optional
 
-from app.utils.settings import settings
 from sqlalchemy import URL, Boolean, ForeignKey, Integer, String, Text, create_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column, sessionmaker
+
+from app.utils.settings import settings
 
 
 def create_db_url():

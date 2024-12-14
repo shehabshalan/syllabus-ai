@@ -1,4 +1,4 @@
-from app.db.core import Users, model_dump
+from app.db import Users, model_dump
 from app.utils.jwt import generate_access_token, verify_google_token, verify_token
 from app.utils.schema import UserResponse
 from fastapi import HTTPException, status
