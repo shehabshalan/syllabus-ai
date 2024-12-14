@@ -5,9 +5,10 @@
  * AI powered learning
  * OpenAPI spec version: 1.0.0
  */
+import type { Chapter } from './chapter';
 
-export interface Chapter {
-  description: string;
+export interface GetTopicChaptersResponse {
+  chapters: Chapter[];
   id: number;
   title: string;
 }

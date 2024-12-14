@@ -6,8 +6,8 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export interface Chapter {
-  description: string;
+export interface UserTopics {
   id: number;
+  progress: number;
   title: string;
 }
