@@ -1,9 +1,17 @@
+from typing import Annotated
+
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 from sqlalchemy.orm import Session
 
-from app.db import get_session
+from app.db import get_session, get_user_topic_chapters_by_id, get_user_topics
 from app.services import user_service
-from app.utils.schema import AuthRequest, UserResponse
+from app.utils.auth_dep import get_current_user
+from app.utils.schema import (
+    AuthRequest,
+    GetTopicChaptersResponse,
+    UserResponse,
+    UserTopics,
+)
 
 router = APIRouter(tags=["User"], prefix="/user")
 
@@ -28,9 +36,24 @@ async def me(request: Request) -> UserResponse:
     return await user_service.get_user(token)
 
 
-@router.get("/chapters", operation_id="get_chapters")
-async def get_chapters(request: Request):
-    token = request.headers.get("Authorization")
-    if not token:
-        raise HTTPException(status_code=401, detail="Unauthorized")
-    return await user_service.get_chapters(token)
+@router.get(
+    "/topic/{id}",
+    operation_id="get_topic_chapters",
+    response_model=GetTopicChaptersResponse,
+)
+async def get_topic_chapters(
+    id: int,
+    current_user: Annotated[UserResponse, Depends(get_current_user)],
+    session: Session = Depends(get_session),
+) -> GetTopicChaptersResponse:
+    topic_chapters = get_user_topic_chapters_by_id(session, id, current_user.id)
+    return topic_chapters
+
+
+@router.get("/topics", operation_id="get_topics", response_model=list[UserTopics])
+async def get_topics(
+    current_user: Annotated[UserResponse, Depends(get_current_user)],
+    session: Session = Depends(get_session),
+) -> list[UserTopics]:
+    topics = get_user_topics(session, current_user.id)
+    return topics

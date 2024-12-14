@@ -18,13 +18,14 @@ class GenerateChaptersRequest(BaseModel):
 
 
 class Chapter(BaseModel):
-    name: str
+    id: int
+    title: str
     description: str
-    slug: str
 
 
-class GenerateChaptersResponse(BaseModel):
-    topic: str
+class GetTopicChaptersResponse(BaseModel):
+    id: int
+    title: str
     chapters: List[Chapter]
 
 
@@ -67,3 +68,9 @@ class UserResponse(BaseModel):
 
 class ChaptersGenerationResponse(BaseModel):
     id: int
+
+
+class UserTopics(BaseModel):
+    id: int
+    title: str
+    progress: int

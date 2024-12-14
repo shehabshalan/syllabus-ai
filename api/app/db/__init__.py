@@ -1,8 +1,17 @@
 from typing import Optional
 
 from sqlalchemy import URL, Boolean, ForeignKey, Integer, String, Text, create_engine
-from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column, sessionmaker
+from sqlalchemy.orm import (
+    DeclarativeBase,
+    Mapped,
+    Session,
+    joinedload,
+    mapped_column,
+    relationship,
+    sessionmaker,
+)
 
+from app.utils.schema import UserTopics
 from app.utils.settings import settings
 
 
@@ -49,6 +58,8 @@ class Topics(Base):
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
     title: Mapped[str] = mapped_column(String(255), nullable=False)
     progress: Mapped[int] = mapped_column(Integer, default=0)
+    # Relationship to chapters
+    chapters = relationship("Chapters", backref="topic", lazy="select")
 
     def __repr__(self):
         return f"<Topic(id={self.id}, title={self.title}, progress={self.progress})>"
@@ -141,3 +152,42 @@ def create_chapter(
     session.commit()
     session.refresh(new_chapter)
     return model_dump(new_chapter)
+
+
+def get_user_topic_chapters_by_id(
+    session: Session, topic_id: int, user_id: int
+) -> dict:
+    topic_with_chapters = (
+        session.query(Topics)
+        .join(Chapters, Topics.id == Chapters.topic_id)
+        .filter(Topics.id == topic_id, Topics.user_id == user_id)
+        .options(joinedload(Topics.chapters))
+        .first()
+    )
+
+    if topic_with_chapters:
+        return {
+            "id": topic_with_chapters.id,
+            "title": topic_with_chapters.title,
+            "chapters": [
+                {
+                    "id": chapter.id,
+                    "title": chapter.title,
+                    "description": chapter.short_description,
+                }
+                for chapter in topic_with_chapters.chapters
+            ],
+        }
+    return None
+
+
+def get_user_topics(session: Session, user_id: int) -> list[UserTopics]:
+    topics = session.query(Topics).filter(Topics.user_id == user_id).all()
+    return [
+        {
+            "id": topic.id,
+            "title": topic.title,
+            "progress": topic.progress,
+        }
+        for topic in topics
+    ]

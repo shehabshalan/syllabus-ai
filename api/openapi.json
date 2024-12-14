@@ -68,6 +68,73 @@
                 }
             }
         },
+        "/user/topic/{id}": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get Topic Chapters",
+                "operationId": "get_topic_chapters",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetTopicChaptersResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/topics": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get Topics",
+                "operationId": "get_topics",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/UserTopics"
+                                    },
+                                    "type": "array",
+                                    "title": "Response Get Topics"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/generation/chapters": {
             "post": {
                 "tags": [
@@ -245,6 +312,29 @@
                 ],
                 "title": "AuthRequest"
             },
+            "Chapter": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "title": "Id"
+                    },
+                    "title": {
+                        "type": "string",
+                        "title": "Title"
+                    },
+                    "description": {
+                        "type": "string",
+                        "title": "Description"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "title",
+                    "description"
+                ],
+                "title": "Chapter"
+            },
             "ChaptersGenerationResponse": {
                 "properties": {
                     "id": {
@@ -341,6 +431,32 @@
                 ],
                 "title": "GenerateQuizResponse"
             },
+            "GetTopicChaptersResponse": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "title": "Id"
+                    },
+                    "title": {
+                        "type": "string",
+                        "title": "Title"
+                    },
+                    "chapters": {
+                        "items": {
+                            "$ref": "#/components/schemas/Chapter"
+                        },
+                        "type": "array",
+                        "title": "Chapters"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "title",
+                    "chapters"
+                ],
+                "title": "GetTopicChaptersResponse"
+            },
             "HTTPValidationError": {
                 "properties": {
                     "detail": {
@@ -429,6 +545,29 @@
                     "is_active"
                 ],
                 "title": "UserResponse"
+            },
+            "UserTopics": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "title": "Id"
+                    },
+                    "title": {
+                        "type": "string",
+                        "title": "Title"
+                    },
+                    "progress": {
+                        "type": "integer",
+                        "title": "Progress"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "title",
+                    "progress"
+                ],
+                "title": "UserTopics"
             },
             "ValidationError": {
                 "properties": {
