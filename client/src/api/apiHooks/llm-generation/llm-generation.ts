@@ -14,7 +14,7 @@ import type {
   UseMutationResult
 } from '@tanstack/react-query'
 import type {
-  Chapters,
+  ChaptersGenerationResponse,
   GenerateChapterRequest,
   GenerateChapterResponse,
   GenerateChaptersRequest,
@@ -37,7 +37,7 @@ export const generateChapters = (
  options?: SecondParameter<typeof apiFetcher>,) => {
       
       
-      return apiFetcher<Chapters>(
+      return apiFetcher<ChaptersGenerationResponse>(
       {url: `/generation/chapters`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: generateChaptersRequest

@@ -9,11 +9,11 @@ from sqlalchemy.orm import Session
 
 from app.db import core
 from app.prompts import (
-    GENERATE_CHAPTER_CONTENT_SYSTEM_PROMPT,
     GENERATE_QUIZ_SYSTEM_PROMPT,
 )
 from app.utils import schema
 from app.utils.llm import LLM
+from app.utils.schema import ChaptersGenerationResponse
 from app.utils.settings import settings
 
 router = APIRouter(prefix="/generation", tags=["LLM Generation"])
@@ -23,13 +23,13 @@ reset_baml_env_vars(dict(os.environ))
 
 @router.post(
     "/chapters",
-    response_model=Chapters,
+    response_model=ChaptersGenerationResponse,
     operation_id="generate_chapters",
 )
 def generate_chapters(
     request: schema.GenerateChaptersRequest,
     session: Session = Depends(core.get_session),
-) -> Chapters:
+) -> ChaptersGenerationResponse:
     response = b.GenerateChapters(request.topic)
     # save to db
     topic = core.create_topic(
@@ -45,7 +45,7 @@ def generate_chapters(
             short_description=chapter.description,
         )
 
-    return response
+    return ChaptersGenerationResponse(id=topic["id"])
 
 
 @router.post(

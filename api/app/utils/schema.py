@@ -63,3 +63,7 @@ class UserResponse(BaseModel):
     is_active: bool
     token: str | None = None
     picture: str | None = None
+
+
+class ChaptersGenerationResponse(BaseModel):
+    id: int

@@ -91,7 +91,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Chapters"
+                                    "$ref": "#/components/schemas/ChaptersGenerationResponse"
                                 }
                             }
                         }
@@ -245,49 +245,18 @@
                 ],
                 "title": "AuthRequest"
             },
-            "ChapterOutline": {
+            "ChaptersGenerationResponse": {
                 "properties": {
-                    "name": {
-                        "type": "string",
-                        "title": "Name"
-                    },
-                    "description": {
-                        "type": "string",
-                        "title": "Description"
-                    },
-                    "slug": {
-                        "type": "string",
-                        "title": "Slug"
+                    "id": {
+                        "type": "integer",
+                        "title": "Id"
                     }
                 },
                 "type": "object",
                 "required": [
-                    "name",
-                    "description",
-                    "slug"
+                    "id"
                 ],
-                "title": "ChapterOutline"
-            },
-            "Chapters": {
-                "properties": {
-                    "topic": {
-                        "type": "string",
-                        "title": "Topic"
-                    },
-                    "chapters": {
-                        "items": {
-                            "$ref": "#/components/schemas/ChapterOutline"
-                        },
-                        "type": "array",
-                        "title": "Chapters"
-                    }
-                },
-                "type": "object",
-                "required": [
-                    "topic",
-                    "chapters"
-                ],
-                "title": "Chapters"
+                "title": "ChaptersGenerationResponse"
             },
             "GenerateChapterRequest": {
                 "properties": {

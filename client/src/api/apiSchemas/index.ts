@@ -10,6 +10,7 @@ export * from './authRequest';
 export * from './chapter';
 export * from './chapterOutline';
 export * from './chapters';
+export * from './chaptersGenerationResponse';
 export * from './generateChapterRequest';
 export * from './generateChapterResponse';
 export * from './generateChaptersRequest';
