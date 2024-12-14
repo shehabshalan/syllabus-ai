@@ -1,18 +1,12 @@
 import { useGenerateChapters } from '@/api/apiHooks/llm-generation/llm-generation';
 import { useMe } from '@/api/apiHooks/user/user';
-import AuthWrapper from '@/components/AuthWrapper/AuthWrapper';
+import AuthWrapper from '@/components/auth/AuthWrapper';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+
 import Container from '@/components/ui/container';
 import { Input } from '@/components/ui/input';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
+import { useToast } from '@/components/ui/use-toast';
 import { Sparkles } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
@@ -28,23 +22,34 @@ const Home = () => {
   const navigate = useNavigate();
   const [topic, setTopic] = useState('');
   const { data: user, isLoading } = useMe();
-  const {
-    mutateAsync: generateChatpers,
-    data,
-    isPending,
-  } = useGenerateChapters();
+  const { mutate: generateChatpers, isPending } = useGenerateChapters();
+  const { toast } = useToast();
 
   const handleSubmit = async () => {
     if (!topic || !user) {
       return;
     }
 
-    await generateChatpers({
-      data: {
-        topic: topic,
-        user_id: user?.id,
+    generateChatpers(
+      {
+        data: {
+          topic: topic,
+          user_id: user?.id,
+        },
       },
-    });
+      {
+        onSuccess: (data) => {
+          navigate(`/topic/${data?.id}`);
+        },
+        onError: () => {
+          toast({
+            variant: 'destructive',
+            title: 'An error occurred',
+            description: `We could not generate chapters for this ${topic}.`,
+          });
+        },
+      }
+    );
   };
 
   return (
@@ -107,32 +112,10 @@ const Home = () => {
             ))}
           </div>
         </>
+        {isPending && (
+          <LoadingSpinner message="Generating chapters for this topic..." />
+        )}
       </div>
-      {isPending && <LoadingSpinner />}
-      {data && data?.chapters.length > 0 && (
-        <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4 p-4">
-          {data?.chapters.map((chapter, index) => (
-            <Card key={index}>
-              <CardHeader>
-                <CardTitle>{chapter.name}</CardTitle>
-
-                <CardDescription>{chapter.description}</CardDescription>
-              </CardHeader>
-              <CardContent></CardContent>
-              <CardFooter className="flex justify-between">
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    navigate(`/chapter/${chapter.slug}`);
-                  }}
-                >
-                  View
-                </Button>
-              </CardFooter>
-            </Card>
-          ))}
-        </div>
-      )}
     </Container>
   );
 };
