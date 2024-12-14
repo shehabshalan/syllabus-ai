@@ -8,7 +8,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+} from '@/components/ui/alert-dialog';
 
 type ActionDialogProps = {
   title: string;
@@ -19,14 +19,14 @@ type ActionDialogProps = {
   children?: React.ReactNode;
 };
 
-export function ActionDialog({
+const ActionDialog = ({
   title,
   description,
   cancelButtonText,
   continueButtonText,
   children,
   onContinue,
-}: ActionDialogProps) {
+}: ActionDialogProps) => {
   const handleContinue = () => {
     onContinue();
   };
@@ -48,4 +48,6 @@ export function ActionDialog({
       </AlertDialogContent>
     </AlertDialog>
   );
-}
+};
+
+export default ActionDialog;

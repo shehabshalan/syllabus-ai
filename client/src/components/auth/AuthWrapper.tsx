@@ -7,7 +7,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import LoginWithGoogle from '../Site/LoginWithGoogle';
+import LoginWithGoogle from './LoginWithGoogle';
 
 type AuthWrapperProps = {
   trigger: React.ReactNode;

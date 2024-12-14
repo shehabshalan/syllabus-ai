@@ -4,8 +4,8 @@ import { BrowserRouter } from 'react-router-dom';
 import { Toaster } from '@/components/ui/toaster';
 import Router from './routes/Router';
 import { ThemeProvider } from './providers/ThemeProvider';
-import { SiteHeader } from './components/Site/SiteHeader';
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import SiteHeader from './components/layout/SiteHeader';
 
 const queryClient = new QueryClient({
   defaultOptions: {
