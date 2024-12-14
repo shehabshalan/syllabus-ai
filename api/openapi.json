@@ -554,13 +554,18 @@
                     "progress": {
                         "type": "integer",
                         "title": "Progress"
+                    },
+                    "chapter_count": {
+                        "type": "integer",
+                        "title": "Chapter Count"
                     }
                 },
                 "type": "object",
                 "required": [
                     "id",
                     "title",
-                    "progress"
+                    "progress",
+                    "chapter_count"
                 ],
                 "title": "UserTopics"
             },

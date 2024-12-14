@@ -39,16 +39,23 @@ const UserTopics = () => {
   }
   return (
     <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4 py-4 mt-4">
-      {data?.map((topic: any) => (
+      {data?.map((topic) => (
         <Card key={topic.id}>
           <CardHeader>
             <CardTitle>{topic.title}</CardTitle>
 
             <CardDescription>
-              <p>
-                {topic.progress === 0 ? 'Not started yet' : 'Keep learning'}
-              </p>
-              <Progress value={topic.progress} />
+              <div className="space-y-2">
+                <p className="text-sm font-medium">
+                  {topic.chapter_count} chapters
+                </p>
+                {topic.progress > 0 && <Progress value={topic.progress} />}
+                <p className="text-xs text-muted-foreground">
+                  {topic.progress === 0
+                    ? 'Ready to start'
+                    : `${topic.progress}% completed`}
+                </p>
+              </div>
             </CardDescription>
           </CardHeader>
           <CardFooter>

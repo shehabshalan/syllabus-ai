@@ -7,6 +7,7 @@
  */
 
 export interface UserTopics {
+  chapter_count: number;
   id: number;
   progress: number;
   title: string;

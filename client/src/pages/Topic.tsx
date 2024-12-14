@@ -42,7 +42,7 @@ const Topic = () => {
   return (
     <Container className=" mt-12 gap-6 pb-8 pt-6 md:py-10">
       <h1 className="text-xl md:text-4xl sm:text-lg font-bold leading-tight tracking-tighter ">
-        {data.title}
+        {data.title} - ({data.chapters.length} chapters)
       </h1>
       <TopicChapters chapters={data.chapters} />
     </Container>

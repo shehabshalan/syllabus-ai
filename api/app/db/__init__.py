@@ -1,6 +1,15 @@
 from typing import Optional
 
-from sqlalchemy import URL, Boolean, ForeignKey, Integer, String, Text, create_engine
+from sqlalchemy import (
+    URL,
+    Boolean,
+    ForeignKey,
+    Integer,
+    String,
+    Text,
+    create_engine,
+    func,
+)
 from sqlalchemy.orm import (
     DeclarativeBase,
     Mapped,
@@ -182,14 +191,22 @@ def get_user_topic_chapters_by_id(
 
 
 def get_user_topics(session: Session, user_id: int) -> list[UserTopics]:
-    topics = session.query(Topics).filter(Topics.user_id == user_id).all()
+    topics_with_counts = (
+        session.query(Topics, func.count(Chapters.id).label("chapter_count"))
+        .outerjoin(Chapters, Topics.id == Chapters.topic_id)
+        .filter(Topics.user_id == user_id)
+        .group_by(Topics.id)
+        .all()
+    )
+
     return [
         {
             "id": topic.id,
             "title": topic.title,
             "progress": topic.progress,
+            "chapter_count": count,
         }
-        for topic in topics
+        for topic, count in topics_with_counts
     ]
 
 

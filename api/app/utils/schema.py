@@ -73,3 +73,4 @@ class UserTopics(BaseModel):
     id: int
     title: str
     progress: int
+    chapter_count: int
