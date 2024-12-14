@@ -139,7 +139,7 @@ def create_topic(session: Session, user_id: int, title: str) -> Topics:
     session.add(new_topic)
     session.commit()
     session.refresh(new_topic)
-    return model_dump(new_topic)
+    return new_topic
 
 
 def create_chapter(
@@ -191,3 +191,11 @@ def get_user_topics(session: Session, user_id: int) -> list[UserTopics]:
         }
         for topic in topics
     ]
+
+
+def get_topic_by_title(session: Session, title: str, user_id: int) -> Topics:
+    return (
+        session.query(Topics)
+        .filter(Topics.title == title, Topics.user_id == user_id)
+        .first()
+    )

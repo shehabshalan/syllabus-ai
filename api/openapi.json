@@ -381,10 +381,6 @@
             },
             "GenerateChaptersRequest": {
                 "properties": {
-                    "user_id": {
-                        "type": "integer",
-                        "title": "User Id"
-                    },
                     "topic": {
                         "type": "string",
                         "title": "Topic"
@@ -392,7 +388,6 @@
                 },
                 "type": "object",
                 "required": [
-                    "user_id",
                     "topic"
                 ],
                 "title": "GenerateChaptersRequest"

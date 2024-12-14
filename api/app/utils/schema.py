@@ -13,7 +13,6 @@ class ResponseFormat(str, Enum):
 
 
 class GenerateChaptersRequest(BaseModel):
-    user_id: int
     topic: str
 
 

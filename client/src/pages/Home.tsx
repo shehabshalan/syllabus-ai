@@ -34,7 +34,6 @@ const Home = () => {
       {
         data: {
           topic: topic,
-          user_id: user?.id,
         },
       },
       {

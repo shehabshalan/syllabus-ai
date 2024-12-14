@@ -1,4 +1,5 @@
 import os
+from typing import Annotated
 
 import dotenv
 from baml_client import reset_baml_env_vars
@@ -11,8 +12,9 @@ from app.prompts import (
     GENERATE_QUIZ_SYSTEM_PROMPT,
 )
 from app.utils import schema
+from app.utils.auth_dep import get_current_user
 from app.utils.llm import LLM
-from app.utils.schema import ChaptersGenerationResponse
+from app.utils.schema import ChaptersGenerationResponse, UserResponse
 from app.utils.settings import settings
 
 router = APIRouter(prefix="/generation", tags=["LLM Generation"])
@@ -27,25 +29,31 @@ reset_baml_env_vars(dict(os.environ))
 )
 def generate_chapters(
     request: schema.GenerateChaptersRequest,
+    current_user: Annotated[UserResponse, Depends(get_current_user)],
     session: Session = Depends(db.get_session),
 ) -> ChaptersGenerationResponse:
+    topic_exists = db.get_topic_by_title(
+        session=session, title=request.topic, user_id=current_user.id
+    )
+    if topic_exists:
+        return ChaptersGenerationResponse(id=topic_exists.id)
+
     response = b.GenerateChapters(request.topic)
     # save to db
-
     topic = db.create_topic(
-        session=session, user_id=request.user_id, title=request.topic
+        session=session, user_id=current_user.id, title=request.topic
     )
     chapters = response.chapters
 
     for chapter in chapters:
         db.create_chapter(
             session=session,
-            topic_id=topic["id"],
+            topic_id=topic.id,
             title=chapter.name,
             short_description=chapter.description,
         )
 
-    return ChaptersGenerationResponse(id=topic["id"])
+    return ChaptersGenerationResponse(id=topic.id)
 
 
 @router.post(

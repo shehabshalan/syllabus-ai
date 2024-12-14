@@ -32,6 +32,7 @@ const LoginWithGoogle = () => {
         onSuccess(data) {
           if (data.token) {
             localStorage.setItem('token', data.token);
+            // todo: replace /syllabus-ai with current path
             window.location.href = `/syllabus-ai${ROUTES.HOME}`;
           }
         },

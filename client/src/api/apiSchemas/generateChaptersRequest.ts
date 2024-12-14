@@ -8,5 +8,4 @@
 
 export interface GenerateChaptersRequest {
   topic: string;
-  user_id: number;
 }
