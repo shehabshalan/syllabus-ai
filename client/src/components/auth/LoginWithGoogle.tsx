@@ -30,8 +30,24 @@ const LoginWithGoogle = () => {
       {
         onSuccess(data) {
           if (data.token) {
-            localStorage.setItem('token', data.token);
-            window.location.reload();
+            toast({
+              variant: 'default',
+              title: 'Success',
+              description: 'You have successfully logged in.',
+            });
+            try {
+              localStorage.setItem('token', data.token);
+            } catch (e) {
+              toast({
+                variant: 'destructive',
+                title: 'An error occurred',
+                description:
+                  'We could not save your token. Try logging in again.',
+              });
+            }
+            setTimeout(() => {
+              window.location.reload();
+            }, 500);
           }
         },
         onError(e: Error & { response?: any }) {
