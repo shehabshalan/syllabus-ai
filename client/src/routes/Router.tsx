@@ -6,6 +6,7 @@ import { LoadingSpinner } from '@/components/ui/loading-spinner';
 
 const Home = lazy(() => import('@/pages/Home'));
 const Topic = lazy(() => import('@/pages/Topic'));
+const Chapter = lazy(() => import('@/pages/Chapter'));
 const Profile = lazy(() => import('@/pages/Profile'));
 const About = lazy(() => import('@/pages/About'));
 
@@ -15,6 +16,7 @@ const Router = () => {
       <Routes>
         <Route path={ROUTES.HOME} element={<Home />} />
         <Route path={ROUTES.TOPIC} element={<Topic />} />
+        <Route path={ROUTES.CHAPTER} element={<Chapter />} />
         <Route path={ROUTES.PROFILE} element={<Profile />} />
         <Route path={ROUTES.ABOUT} element={<About />} />
         <Route path={ROUTES.NOT_FOUND} element={<NotFound />} />
