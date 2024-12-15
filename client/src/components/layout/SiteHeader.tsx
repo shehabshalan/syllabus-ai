@@ -1,4 +1,4 @@
-import { Sparkles } from 'lucide-react';
+import { Menu, Sparkles } from 'lucide-react';
 import { siteConfig } from '@/utils/siteConfig';
 import { Link, useLocation } from 'react-router-dom';
 import LoginWithGoogle from '../auth/LoginWithGoogle';
@@ -6,23 +6,23 @@ import { useMe } from '@/api/apiHooks/user/user';
 import { getToken } from '@/utils/utils';
 import ThemeToggle from '../theme/ThemeToggle';
 import { cn } from '@/lib/utils';
-// import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet';
-// import { Button } from '../ui/button';
-// import { Separator } from '../ui/separator';
-// import { useState } from 'react';
+import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet';
+import { Button } from '../ui/button';
+import { Separator } from '../ui/separator';
+import { useState } from 'react';
 
 const SiteHeader = () => {
   const location = useLocation();
-  // const [isOpen, setIsOpen] = useState<boolean>(false);
-  const { isLoading, data } = useMe({
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const { isLoading, data, error } = useMe({
     query: {
       enabled: getToken() ? true : false,
     },
   });
 
-  // if (error) {
-  //   localStorage.getItem('token') && localStorage.removeItem('token');
-  // }
+  if (error) {
+    localStorage.getItem('token') && localStorage.removeItem('token');
+  }
 
   return (
     <header className="bg-background sticky top-0 z-40 w-full border-b">
@@ -54,7 +54,7 @@ const SiteHeader = () => {
         </nav>
 
         {/* Desktop Actions */}
-        <div className="flex items-center gap-4">
+        <div className="hidden md:flex items-center gap-4">
           <ThemeToggle />
           {isLoading ? null : data ? (
             <Link to="/profile" className="text-sm font-medium">
@@ -66,7 +66,7 @@ const SiteHeader = () => {
         </div>
 
         {/* Mobile Navigation */}
-        {/* <Sheet open={isOpen} onOpenChange={setIsOpen}>
+        <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <SheetTrigger asChild className="md:hidden">
             <Button variant="ghost" size="icon">
               <Menu className="h-5 w-5" onClick={() => setIsOpen(true)} />
@@ -109,7 +109,7 @@ const SiteHeader = () => {
               </div>
             </nav>
           </SheetContent>
-        </Sheet> */}
+        </Sheet>
       </div>
     </header>
   );
