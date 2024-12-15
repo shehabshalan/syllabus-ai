@@ -6,6 +6,7 @@ import Router from './routes/Router';
 import { ThemeProvider } from './providers/ThemeProvider';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import SiteHeader from './components/layout/SiteHeader';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -21,15 +22,18 @@ const App = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider>
-        <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
-          <BrowserRouter basename={'/syllabus-ai/'}>
-            <SiteHeader />
-            <Router />
-            <Toaster />
-          </BrowserRouter>
-        </GoogleOAuthProvider>
-      </ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider>
+          <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+            <BrowserRouter basename={'/syllabus-ai/'}>
+              <SiteHeader />
+              <Router />
+              <Toaster />
+            </BrowserRouter>
+          </GoogleOAuthProvider>
+        </ThemeProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
     </QueryClientProvider>
   );
 };

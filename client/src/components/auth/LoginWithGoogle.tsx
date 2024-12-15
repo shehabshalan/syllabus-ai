@@ -1,5 +1,4 @@
 import { useToast } from '../ui/use-toast';
-import { ROUTES } from '@/routes/Routes';
 import { TokenResponse, useGoogleLogin } from '@react-oauth/google';
 import { Button } from '../ui/button';
 import { useAuth } from '@/api/apiHooks/user/user';
@@ -32,8 +31,7 @@ const LoginWithGoogle = () => {
         onSuccess(data) {
           if (data.token) {
             localStorage.setItem('token', data.token);
-            // todo: replace /syllabus-ai with current path
-            window.location.href = `/syllabus-ai${ROUTES.HOME}`;
+            window.location.reload();
           }
         },
         onError(e: Error & { response?: any }) {

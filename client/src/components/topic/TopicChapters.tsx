@@ -6,17 +6,20 @@ import {
   CardHeader,
   CardTitle,
 } from '../ui/card';
-import { useNavigate } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { Button } from '../ui/button';
 import { useGenerateChapter } from '@/api/apiHooks/llm-generation/llm-generation';
 import { useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 
 type TopicChaptersProps = {
   chapters: Chapter[];
 };
 const TopicChapters = ({ chapters }: TopicChaptersProps) => {
   const navigate = useNavigate();
+  const { id } = useParams<{ id: string }>();
   const { mutate: generateChatper, isPending } = useGenerateChapter();
+  const queryClinet = useQueryClient();
   const [activeCardId, setActiveCardId] = useState<number | null>(null);
 
   return (
@@ -52,6 +55,9 @@ const TopicChapters = ({ chapters }: TopicChaptersProps) => {
                     },
                     {
                       onSuccess: (data) => {
+                        queryClinet.invalidateQueries({
+                          queryKey: [`/user/topic/${id}`],
+                        });
                         navigate(`/chapter/${data.id}`);
                         setActiveCardId(null);
                       },
