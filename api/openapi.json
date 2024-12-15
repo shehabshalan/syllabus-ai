@@ -135,6 +135,48 @@
                 }
             }
         },
+        "/user/chapter/{id}": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get Chapter",
+                "operationId": "get_chapter",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetChapterResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/generation/chapters": {
             "post": {
                 "tags": [
@@ -325,6 +367,17 @@
                     "description": {
                         "type": "string",
                         "title": "Description"
+                    },
+                    "content": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Content"
                     }
                 },
                 "type": "object",
@@ -350,9 +403,13 @@
             },
             "GenerateChapterRequest": {
                 "properties": {
-                    "chapter": {
+                    "id": {
+                        "type": "integer",
+                        "title": "Id"
+                    },
+                    "title": {
                         "type": "string",
-                        "title": "Chapter"
+                        "title": "Title"
                     },
                     "description": {
                         "type": "string",
@@ -361,21 +418,22 @@
                 },
                 "type": "object",
                 "required": [
-                    "chapter",
+                    "id",
+                    "title",
                     "description"
                 ],
                 "title": "GenerateChapterRequest"
             },
             "GenerateChapterResponse": {
                 "properties": {
-                    "content": {
-                        "type": "string",
-                        "title": "Content"
+                    "id": {
+                        "type": "integer",
+                        "title": "Id"
                     }
                 },
                 "type": "object",
                 "required": [
-                    "content"
+                    "id"
                 ],
                 "title": "GenerateChapterResponse"
             },
@@ -425,6 +483,44 @@
                     "questions"
                 ],
                 "title": "GenerateQuizResponse"
+            },
+            "GetChapterResponse": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "title": "Id"
+                    },
+                    "title": {
+                        "type": "string",
+                        "title": "Title"
+                    },
+                    "short_description": {
+                        "type": "string",
+                        "title": "Short Description"
+                    },
+                    "content": {
+                        "type": "string",
+                        "title": "Content"
+                    },
+                    "is_read": {
+                        "type": "boolean",
+                        "title": "Is Read"
+                    },
+                    "topic_id": {
+                        "type": "integer",
+                        "title": "Topic Id"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "title",
+                    "short_description",
+                    "content",
+                    "is_read",
+                    "topic_id"
+                ],
+                "title": "GetChapterResponse"
             },
             "GetTopicChaptersResponse": {
                 "properties": {

@@ -23,6 +23,7 @@ import type {
 } from '@tanstack/react-query'
 import type {
   AuthRequest,
+  GetChapterResponse,
   GetTopicChaptersResponse,
   HTTPValidationError,
   UserResponse,
@@ -343,6 +344,93 @@ export function useGetTopics<TData = Awaited<ReturnType<typeof getTopics>>, TErr
   ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
   const queryOptions = getGetTopicsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+/**
+ * @summary Get Chapter
+ */
+export const getChapter = (
+    id: number,
+ options?: SecondParameter<typeof apiFetcher>,signal?: AbortSignal
+) => {
+      
+      
+      return apiFetcher<GetChapterResponse>(
+      {url: `/user/chapter/${id}`, method: 'GET', signal
+    },
+      options);
+    }
+  
+
+export const getGetChapterQueryKey = (id: number,) => {
+    return [`/user/chapter/${id}`] as const;
+    }
+
+    
+export const getGetChapterQueryOptions = <TData = Awaited<ReturnType<typeof getChapter>>, TError = ErrorType<HTTPValidationError>>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getChapter>>, TError, TData>>, request?: SecondParameter<typeof apiFetcher>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetChapterQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getChapter>>> = ({ signal }) => getChapter(id, requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getChapter>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetChapterQueryResult = NonNullable<Awaited<ReturnType<typeof getChapter>>>
+export type GetChapterQueryError = ErrorType<HTTPValidationError>
+
+
+export function useGetChapter<TData = Awaited<ReturnType<typeof getChapter>>, TError = ErrorType<HTTPValidationError>>(
+ id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getChapter>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getChapter>>,
+          TError,
+          TData
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetcher>}
+
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey }
+export function useGetChapter<TData = Awaited<ReturnType<typeof getChapter>>, TError = ErrorType<HTTPValidationError>>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getChapter>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getChapter>>,
+          TError,
+          TData
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetcher>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey }
+export function useGetChapter<TData = Awaited<ReturnType<typeof getChapter>>, TError = ErrorType<HTTPValidationError>>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getChapter>>, TError, TData>>, request?: SecondParameter<typeof apiFetcher>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey }
+/**
+ * @summary Get Chapter
+ */
+
+export function useGetChapter<TData = Awaited<ReturnType<typeof getChapter>>, TError = ErrorType<HTTPValidationError>>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getChapter>>, TError, TData>>, request?: SecondParameter<typeof apiFetcher>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetChapterQueryOptions(id,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 

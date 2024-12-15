@@ -5,11 +5,12 @@
  * AI powered learning
  * OpenAPI spec version: 1.0.0
  */
-import type { ChapterContent } from './chapterContent';
 
-export interface Chapter {
-  content?: ChapterContent;
-  description: string;
+export interface GetChapterResponse {
+  content: string;
   id: number;
+  is_read: boolean;
+  short_description: string;
   title: string;
+  topic_id: number;
 }

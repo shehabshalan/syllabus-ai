@@ -8,6 +8,7 @@
 
 export * from './authRequest';
 export * from './chapter';
+export * from './chapterContent';
 export * from './chapterOutline';
 export * from './chapters';
 export * from './chaptersGenerationResponse';
@@ -17,6 +18,8 @@ export * from './generateChaptersRequest';
 export * from './generateChaptersResponse';
 export * from './generateQuizRequest';
 export * from './generateQuizResponse';
+export * from './getChapter200';
+export * from './getChapterResponse';
 export * from './getTopicChaptersResponse';
 export * from './hTTPValidationError';
 export * from './question';

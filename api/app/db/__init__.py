@@ -20,7 +20,7 @@ from sqlalchemy.orm import (
     sessionmaker,
 )
 
-from app.utils.schema import UserTopics
+from app.utils.schema import GetChapterResponse, UserTopics
 from app.utils.settings import settings
 
 
@@ -175,6 +175,7 @@ def get_user_topic_chapters_by_id(
     )
 
     if topic_with_chapters:
+        sorted_chapters = sorted(topic_with_chapters.chapters, key=lambda x: x.id)
         return {
             "id": topic_with_chapters.id,
             "title": topic_with_chapters.title,
@@ -183,8 +184,9 @@ def get_user_topic_chapters_by_id(
                     "id": chapter.id,
                     "title": chapter.title,
                     "description": chapter.short_description,
+                    "content": chapter.content,
                 }
-                for chapter in topic_with_chapters.chapters
+                for chapter in sorted_chapters
             ],
         }
     return None
@@ -216,3 +218,51 @@ def get_topic_by_title(session: Session, title: str, user_id: int) -> Topics:
         .filter(Topics.title == title, Topics.user_id == user_id)
         .first()
     )
+
+
+def get_chapter_by_title(
+    session: Session, title: str, chapter_id: int, user_id: int
+) -> Chapters:
+    chapter = (
+        session.query(Chapters)
+        .filter(
+            Chapters.title == title,
+            Chapters.id == chapter_id,
+            Topics.user_id == user_id,
+        )
+        .first()
+    )
+    if chapter.content:
+        return chapter
+    return None
+
+
+def get_chapter_by_id(
+    session: Session, chapter_id: int, user_id: int
+) -> GetChapterResponse:
+    chapter = (
+        session.query(Chapters)
+        .join(Topics, Topics.id == Chapters.topic_id)
+        .filter(Chapters.id == chapter_id, Topics.user_id == user_id)
+        .first()
+    )
+    if chapter:
+        return model_dump(chapter)
+    return None
+
+
+def update_chapter_content(
+    session: Session, chapter_id: int, user_id: int, content: str
+):
+    chapter = (
+        session.query(Chapters)
+        .join(Topics, Topics.id == Chapters.topic_id)
+        .filter(Chapters.id == chapter_id, Topics.user_id == user_id)
+        .first()
+    )
+
+    if chapter:
+        chapter.content = content
+        session.commit()
+        return
+    return None

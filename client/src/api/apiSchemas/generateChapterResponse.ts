@@ -7,5 +7,5 @@
  */
 
 export interface GenerateChapterResponse {
-  content: string;
+  id: number;
 }

@@ -6,8 +6,4 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export interface GenerateChapterRequest {
-  description: string;
-  id: number;
-  title: string;
-}
+export type GetChapter200 = { [key: string]: unknown };
