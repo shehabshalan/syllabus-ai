@@ -63,9 +63,26 @@ def generate_chapters(
 )
 def generate_chapter(
     request: schema.GenerateChapterRequest,
+    current_user: Annotated[UserResponse, Depends(get_current_user)],
+    session: Session = Depends(db.get_session),
 ) -> schema.GenerateChapterResponse:
-    response = b.GenerateChapter(f"{request.chapter}: {request.description}")
-    return response
+    chapter_exists = db.get_chapter_by_title(
+        session=session,
+        title=request.title,
+        chapter_id=request.id,
+        user_id=current_user.id,
+    )
+    if chapter_exists:
+        return schema.GenerateChapterResponse(id=chapter_exists.id)
+
+    response = b.GenerateChapter(chapter=request.title, description=request.description)
+    db.update_chapter_content(
+        session=session,
+        chapter_id=request.id,
+        user_id=current_user.id,
+        content=response.content,
+    )
+    return schema.GenerateChapterResponse(id=request.id)
 
 
 @router.post(
