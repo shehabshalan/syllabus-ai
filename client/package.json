@@ -1,6 +1,7 @@
 {
   "name": "client",
   "private": true,
+  "homepage": "https://shehabshalan.github.io/syllabus-ai/",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
