@@ -1,3 +1,5 @@
+from typing import Literal
+
 from pydantic_settings import BaseSettings
 
 
@@ -14,6 +16,7 @@ class Settings(BaseSettings):
     DB_USER: str
     DB_PASSWORD: str
     GOOGLE_API_KEY: str
+    MODE: Literal["dev", "prod"] = "dev"
 
     class Config:
         env_file = ".env"

@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Dict, Optional
 
 from sqlalchemy import (
     URL,
@@ -19,9 +19,16 @@ from sqlalchemy.orm import (
     relationship,
     sessionmaker,
 )
+from sqlalchemy.pool import QueuePool
 
 from app.utils.schema import GetChapterResponse, UserTopics
 from app.utils.settings import settings
+
+
+def get_ssl_params() -> Dict[str, str]:
+    if settings.MODE == "prod":
+        return {"sslmode": "require"}
+    return {}
 
 
 def create_db_url():
@@ -32,13 +39,15 @@ def create_db_url():
         host=settings.DB_HOST,
         port=settings.DB_PORT,
         database=settings.DB_NAME,
-        query={},  # type: ignore
+        query=get_ssl_params(),
     )
     return url
 
 
 DATABASE_URL = create_db_url()
-engine = create_engine(DATABASE_URL)
+engine = create_engine(
+    DATABASE_URL, poolclass=QueuePool, pool_size=10, max_overflow=20, pool_pre_ping=True
+)
 session_maker = sessionmaker(bind=engine)
 
 
