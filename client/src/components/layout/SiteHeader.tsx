@@ -14,7 +14,7 @@ import { cn } from '@/lib/utils';
 const SiteHeader = () => {
   const location = useLocation();
   // const [isOpen, setIsOpen] = useState<boolean>(false);
-  const { isLoading, data, error } = useMe({
+  const { isLoading, data } = useMe({
     query: {
       enabled: getToken() ? true : false,
     },
