@@ -92,7 +92,7 @@ const Home = () => {
             </div>
           </div>
           <p className="text-sm text-muted-foreground">Hint: Try topics</p>
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap items-center justify-center">
             {HINT_TOPICS.map((hint, index) => (
               <Button
                 key={index}
