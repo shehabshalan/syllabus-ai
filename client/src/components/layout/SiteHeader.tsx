@@ -93,12 +93,13 @@ const SiteHeader = () => {
                   )
               )}
               <Separator className="my-4" />
-              <div
-                className="flex flex-col gap-4"
-                onClick={() => setIsOpen(false)}
-              >
+              <div className="flex flex-col gap-4">
                 {isLoading ? null : data ? (
-                  <Link to="/profile" className="text-sm font-medium">
+                  <Link
+                    to="/profile"
+                    className="text-sm font-medium"
+                    onClick={() => setIsOpen(false)}
+                  >
                     Profile
                   </Link>
                 ) : (
