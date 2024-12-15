@@ -20,6 +20,7 @@ class Chapter(BaseModel):
     id: int
     title: str
     description: str
+    content: str | None = None
 
 
 class GetTopicChaptersResponse(BaseModel):
@@ -29,12 +30,13 @@ class GetTopicChaptersResponse(BaseModel):
 
 
 class GenerateChapterRequest(BaseModel):
-    chapter: str
+    id: int
+    title: str
     description: str
 
 
 class GenerateChapterResponse(BaseModel):
-    content: str
+    id: int
 
 
 class GenerateQuizRequest(BaseModel):
@@ -74,3 +76,12 @@ class UserTopics(BaseModel):
     title: str
     progress: int
     chapter_count: int
+
+
+class GetChapterResponse(BaseModel):
+    id: int
+    title: str
+    short_description: str
+    content: str
+    is_read: bool
+    topic_id: int
