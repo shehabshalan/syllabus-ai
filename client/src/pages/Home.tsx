@@ -58,7 +58,9 @@ const Home = () => {
           <h1 className="text-xl md:text-4xl sm:text-lg font-bold leading-tight tracking-tighter">
             Learn <span className="underline">anything</span> with SyllabusAI
           </h1>
-
+          <p className="text-lg text-center text-muted-foreground">
+            Get started by entering a topic you want to learn about.
+          </p>
           <div className="flex w-full items-center space-x-2">
             <div className="relative flex-grow">
               <Input
