@@ -23,7 +23,16 @@ const TopicChapters = ({ chapters }: TopicChaptersProps) => {
     <>
       <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4 py-4 mt-4">
         {chapters.map((chapter, index) => (
-          <Card key={index}>
+          <Card
+            key={index}
+            className={`transition-all duration-200 ${
+              activeCardId
+                ? activeCardId === chapter.id
+                  ? 'ring-2 ring-primary shadow-lg'
+                  : 'opacity-50'
+                : ''
+            }`}
+          >
             <CardHeader>
               <CardTitle>{chapter.title}</CardTitle>
               <CardDescription>{chapter.description}</CardDescription>
@@ -43,10 +52,8 @@ const TopicChapters = ({ chapters }: TopicChaptersProps) => {
                     },
                     {
                       onSuccess: (data) => {
-                        setTimeout(() => {
-                          navigate(`/chapter/${data.id}`);
-                          setActiveCardId(null);
-                        }, 1000);
+                        navigate(`/chapter/${data.id}`);
+                        setActiveCardId(null);
                       },
                       onError: () => {
                         console.error('Error generating chapter');
