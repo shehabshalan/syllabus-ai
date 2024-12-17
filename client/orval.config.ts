@@ -19,7 +19,7 @@ const config = {
       },
     },
     input: {
-      target: '../api/openapi.json',
+      target: 'http://localhost:8000/openapi.json',
     },
   },
 };
