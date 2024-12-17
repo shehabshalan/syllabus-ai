@@ -21,6 +21,7 @@ from sqlalchemy.orm import (
 )
 from sqlalchemy.pool import QueuePool
 
+from app.utils.logger import logger
 from app.utils.schema import GetChapterResponse, UserTopics
 from app.utils.settings import settings
 
@@ -137,6 +138,7 @@ class Quizzes(Base):
 
 def init_db():
     Base.metadata.create_all(bind=engine)
+    logger.info("Database initialized")
 
 
 # Dependency to get the database session
