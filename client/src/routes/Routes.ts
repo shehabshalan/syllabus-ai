@@ -8,7 +8,6 @@ export const ROUTES = {
   CHAPTER: '/chapter/:id',
   ABOUT: '/about',
   AUTH: '/auth',
-  NOT_FOUND: '/not-found',
   BUGGY: '/buggy',
   ANY: '/*',
 };

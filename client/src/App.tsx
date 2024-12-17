@@ -5,8 +5,9 @@ import { Toaster } from '@/components/ui/toaster';
 import Router from './routes/Router';
 import { ThemeProvider } from './providers/ThemeProvider';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import SiteHeader from './components/layout/SiteHeader';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import ErrorBoundary from './pages/Fallback/ErrorBoundary';
+import PageLayout from './components/layout/PageLayout';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -19,17 +20,18 @@ const queryClient = new QueryClient({
 });
 
 const App = () => {
-  console.log(import.meta.env);
-
   return (
     <QueryClientProvider client={queryClient}>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider>
           <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
             <BrowserRouter basename={'/syllabus-ai/'}>
-              <SiteHeader />
-              <Router />
-              <Toaster />
+              <ErrorBoundary>
+                <PageLayout>
+                  <Router />
+                </PageLayout>
+                <Toaster />
+              </ErrorBoundary>
             </BrowserRouter>
           </GoogleOAuthProvider>
         </ThemeProvider>
