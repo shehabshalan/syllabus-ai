@@ -5,12 +5,12 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '../ui/card';
-import { Button } from '../ui/button';
+} from '../../components/ui/card';
+import { Button } from '../../components/ui/button';
 import { useNavigate } from 'react-router';
-import { Progress } from '../ui/progress';
-import { LoadingSpinner } from '../ui/loading-spinner';
-import Container from '../ui/container';
+import { Progress } from '../../components/ui/progress';
+import { LoadingSpinner } from '../../components/common/LoadingSpinner';
+import Container from '../../components/ui/container';
 
 const UserTopics = () => {
   const { data, isLoading, isError } = useGetTopics();

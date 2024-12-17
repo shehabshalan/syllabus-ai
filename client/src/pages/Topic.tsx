@@ -1,6 +1,6 @@
 import { useGetTopicChapters } from '@/api/apiHooks/user/user';
-import { StateWrapper } from '@/components/StateWrapper';
-import TopicChapters from '@/components/topic/TopicChapters';
+import { StateWrapper } from '@/components/common/StateWrapper';
+import TopicChapters from '@/features/Topic/TopicChapters';
 import Container from '@/components/ui/container';
 import { useParams } from 'react-router';
 

@@ -2,7 +2,7 @@ import { lazy, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { ROUTES } from './Routes';
 import NotFound from '@/pages/NotFound';
-import { LoadingSpinner } from '@/components/ui/loading-spinner';
+import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 import ProtectedRoute from '@/ProtectedRoute';
 
 const Home = lazy(() => import('@/pages/Home'));

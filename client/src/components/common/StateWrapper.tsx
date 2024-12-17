@@ -1,5 +1,5 @@
-import Container from './ui/container';
-import { LoadingSpinner } from './ui/loading-spinner';
+import Container from '../ui/container';
+import { LoadingSpinner } from './LoadingSpinner';
 
 type StateWrapperProps = {
   isLoading?: boolean;

@@ -1,6 +1,6 @@
-import { useToast } from '../ui/use-toast';
+import { useToast } from '../../components/ui/use-toast';
 import { TokenResponse, useGoogleLogin } from '@react-oauth/google';
-import { Button } from '../ui/button';
+import { Button } from '../../components/ui/button';
 import { useAuth } from '@/api/apiHooks/user/user';
 
 const LoginWithGoogle = () => {

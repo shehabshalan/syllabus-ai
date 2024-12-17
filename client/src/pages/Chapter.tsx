@@ -3,7 +3,7 @@ import Container from '@/components/ui/container';
 import { useParams } from 'react-router';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { StateWrapper } from '@/components/StateWrapper';
+import { StateWrapper } from '@/components/common/StateWrapper';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const Chapter = () => {

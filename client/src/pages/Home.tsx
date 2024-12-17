@@ -1,11 +1,11 @@
 import { useGenerateChapters } from '@/api/apiHooks/llm-generation/llm-generation';
 import { useMe } from '@/api/apiHooks/user/user';
-import AuthWrapper from '@/components/auth/AuthWrapper';
+import AuthWrapper from '@/features/Auth/AuthWrapper';
 import { Button } from '@/components/ui/button';
 
 import Container from '@/components/ui/container';
 import { Input } from '@/components/ui/input';
-import { LoadingSpinner } from '@/components/ui/loading-spinner';
+import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 import { useToast } from '@/components/ui/use-toast';
 import { Sparkles } from 'lucide-react';
 import { useState } from 'react';

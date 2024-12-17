@@ -1,4 +1,4 @@
-import UserTopics from '@/components/account/UserTopics';
+import UserTopics from '@/features/Topic/UserTopics';
 import Container from '@/components/ui/container';
 
 const Profile = () => {

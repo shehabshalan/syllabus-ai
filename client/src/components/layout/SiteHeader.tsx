@@ -1,7 +1,7 @@
 import { Menu, Sparkles } from 'lucide-react';
 import { siteConfig } from '@/utils/siteConfig';
 import { Link, useLocation } from 'react-router-dom';
-import LoginWithGoogle from '../auth/LoginWithGoogle';
+import LoginWithGoogle from '../../features/Auth/LoginWithGoogle';
 import { useMe } from '@/api/apiHooks/user/user';
 import { getToken } from '@/utils/utils';
 import ThemeToggle from '../theme/ThemeToggle';

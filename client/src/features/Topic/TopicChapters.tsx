@@ -5,9 +5,9 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '../ui/card';
+} from '../../components/ui/card';
 import { useNavigate, useParams } from 'react-router';
-import { Button } from '../ui/button';
+import { Button } from '../../components/ui/button';
 import { useGenerateChapter } from '@/api/apiHooks/llm-generation/llm-generation';
 import { useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
