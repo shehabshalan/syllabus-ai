@@ -15,6 +15,7 @@ import type {
 } from '@tanstack/react-query'
 import type {
   ChaptersGenerationResponse,
+  ChatRequest,
   GenerateChapterRequest,
   GenerateChapterResponse,
   GenerateChaptersRequest,
@@ -197,6 +198,64 @@ export const useGenerateQuiz = <TError = ErrorType<HTTPValidationError>,
       > => {
 
       const mutationOptions = getGenerateQuizMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
+ * @summary Chat With Chapter
+ */
+export const chatWithChapter = (
+    id: number,
+    chatRequest: ChatRequest,
+ options?: SecondParameter<typeof apiFetcher>,) => {
+      
+      
+      return apiFetcher<unknown>(
+      {url: `/generation/chat/chapter/${id}`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: chatRequest
+    },
+      options);
+    }
+  
+
+
+export const getChatWithChapterMutationOptions = <TError = ErrorType<HTTPValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof chatWithChapter>>, TError,{id: number;data: ChatRequest}, TContext>, request?: SecondParameter<typeof apiFetcher>}
+): UseMutationOptions<Awaited<ReturnType<typeof chatWithChapter>>, TError,{id: number;data: ChatRequest}, TContext> => {
+const {mutation: mutationOptions, request: requestOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof chatWithChapter>>, {id: number;data: ChatRequest}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  chatWithChapter(id,data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ChatWithChapterMutationResult = NonNullable<Awaited<ReturnType<typeof chatWithChapter>>>
+    export type ChatWithChapterMutationBody = ChatRequest
+    export type ChatWithChapterMutationError = ErrorType<HTTPValidationError>
+
+    /**
+ * @summary Chat With Chapter
+ */
+export const useChatWithChapter = <TError = ErrorType<HTTPValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof chatWithChapter>>, TError,{id: number;data: ChatRequest}, TContext>, request?: SecondParameter<typeof apiFetcher>}
+): UseMutationResult<
+        Awaited<ReturnType<typeof chatWithChapter>>,
+        TError,
+        {id: number;data: ChatRequest},
+        TContext
+      > => {
+
+      const mutationOptions = getChatWithChapterMutationOptions(options);
 
       return useMutation(mutationOptions);
     }
