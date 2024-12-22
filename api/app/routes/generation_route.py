@@ -28,7 +28,7 @@ reset_baml_env_vars(dict(os.environ))
     response_model=ChaptersGenerationResponse,
     operation_id="generate_chapters",
 )
-def generate_chapters(
+async def generate_chapters(
     request: schema.GenerateChaptersRequest,
     current_user: Annotated[UserResponse, Depends(get_current_user)],
     session: Session = Depends(db.get_session),
@@ -39,7 +39,7 @@ def generate_chapters(
     if topic_exists:
         return ChaptersGenerationResponse(id=topic_exists.id)
 
-    response = b.GenerateChapters(request.topic)
+    response = await b.GenerateChapters(request.topic)
     # save to db
     topic = db.create_topic(
         session=session, user_id=current_user.id, title=request.topic
@@ -62,7 +62,7 @@ def generate_chapters(
     response_model=schema.GenerateChapterResponse,
     operation_id="generate_chapter",
 )
-def generate_chapter(
+async def generate_chapter(
     request: schema.GenerateChapterRequest,
     current_user: Annotated[UserResponse, Depends(get_current_user)],
     session: Session = Depends(db.get_session),
@@ -76,7 +76,9 @@ def generate_chapter(
     if chapter_exists:
         return schema.GenerateChapterResponse(id=chapter_exists.id)
 
-    response = b.GenerateChapter(chapter=request.title, description=request.description)
+    response = await b.GenerateChapter(
+        chapter=request.title, description=request.description
+    )
     db.update_chapter_content(
         session=session,
         chapter_id=request.id,
