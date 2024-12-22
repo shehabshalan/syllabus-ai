@@ -35,7 +35,10 @@ const App = () => {
             </BrowserRouter>
           </GoogleOAuthProvider>
         </ThemeProvider>
-        <ReactQueryDevtools initialIsOpen={false} />
+        <ReactQueryDevtools
+          initialIsOpen={false}
+          buttonPosition="bottom-left"
+        />
       </QueryClientProvider>
     </QueryClientProvider>
   );
