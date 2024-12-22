@@ -1,4 +1,6 @@
 import { Chapter } from '@/api/apiSchemas';
+import { CheckCircle } from 'lucide-react';
+
 import {
   Card,
   CardDescription,
@@ -11,6 +13,7 @@ import { Button } from '../../components/ui/button';
 import { useGenerateChapter } from '@/api/apiHooks/llm-generation/llm-generation';
 import { useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
+import { useToast } from '@/components/ui/use-toast';
 
 type TopicChaptersProps = {
   chapters: Chapter[];
@@ -18,9 +21,40 @@ type TopicChaptersProps = {
 const TopicChapters = ({ chapters }: TopicChaptersProps) => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
-  const { mutate: generateChatper, isPending } = useGenerateChapter();
+  const { mutateAsync: generateChatper, isPending } = useGenerateChapter();
   const queryClinet = useQueryClient();
   const [activeCardId, setActiveCardId] = useState<number | null>(null);
+  const { toast } = useToast();
+
+  const handleGenerateChapter = async (chapter: Chapter) => {
+    setActiveCardId(chapter.id);
+    await generateChatper(
+      {
+        data: {
+          id: chapter.id,
+          title: chapter.title,
+          description: chapter.description,
+        },
+      },
+      {
+        onSuccess: (data) => {
+          queryClinet.invalidateQueries({
+            queryKey: [`/user/topic/${id}`],
+          });
+          navigate(`/chapter/${data.id}`);
+          setActiveCardId(null);
+        },
+        onError: () => {
+          toast({
+            variant: 'destructive',
+            title: 'Error',
+            description: 'Error generating chapter',
+          });
+          setActiveCardId(null);
+        },
+      }
+    );
+  };
 
   return (
     <>
@@ -28,7 +62,7 @@ const TopicChapters = ({ chapters }: TopicChaptersProps) => {
         {chapters.map((chapter, index) => (
           <Card
             key={index}
-            className={`transition-all duration-200 ${
+            className={`relative transition-all duration-200 ${
               activeCardId
                 ? activeCardId === chapter.id
                   ? 'ring-2 ring-primary shadow-lg'
@@ -36,6 +70,15 @@ const TopicChapters = ({ chapters }: TopicChaptersProps) => {
                 : ''
             }`}
           >
+            {chapter.is_read && (
+              <div className="absolute top-0 right-0 w-20 h-20 overflow-hidden">
+                <div className="absolute top-[6px] right-[-35px] rotate-45 bg-primary text-white text-xs px-8 py-1 shadow-sm flex items-center gap-1.5 font-medium">
+                  <CheckCircle className="h-3.5 w-3.5" />
+                  Done
+                </div>
+              </div>
+            )}
+
             <CardHeader>
               <CardTitle>{chapter.title}</CardTitle>
               <CardDescription>{chapter.description}</CardDescription>
@@ -43,31 +86,7 @@ const TopicChapters = ({ chapters }: TopicChaptersProps) => {
             <CardFooter>
               <Button
                 variant="outline"
-                onClick={() => {
-                  setActiveCardId(chapter.id);
-                  generateChatper(
-                    {
-                      data: {
-                        id: chapter.id,
-                        title: chapter.title,
-                        description: chapter.description,
-                      },
-                    },
-                    {
-                      onSuccess: (data) => {
-                        queryClinet.invalidateQueries({
-                          queryKey: [`/user/topic/${id}`],
-                        });
-                        navigate(`/chapter/${data.id}`);
-                        setActiveCardId(null);
-                      },
-                      onError: () => {
-                        console.error('Error generating chapter');
-                        setActiveCardId(null);
-                      },
-                    }
-                  );
-                }}
+                onClick={() => handleGenerateChapter(chapter)}
               >
                 {chapter.content
                   ? 'View'

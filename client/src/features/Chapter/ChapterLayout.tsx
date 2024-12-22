@@ -41,7 +41,10 @@ const ChapterLayout = ({ chapter }: ChapterLayoutProps) => {
               }`,
             });
             queryClient.invalidateQueries({
-              queryKey: [`/user/chapter/${chapter.id}`],
+              queryKey: [
+                `/user/chapter/${chapter.id}`,
+                `/user/topic/${chapter.topic_id}`,
+              ],
             });
           },
           onError: () => {
