@@ -11,5 +11,6 @@ export interface Chapter {
   content?: ChapterContent;
   description: string;
   id: number;
+  is_read: boolean;
   title: string;
 }

@@ -21,6 +21,7 @@ class Chapter(BaseModel):
     title: str
     description: str
     content: str | None = None
+    is_read: bool
 
 
 class GetTopicChaptersResponse(BaseModel):
@@ -95,3 +96,7 @@ class History(BaseModel):
 class ChatRequest(BaseModel):
     message: str
     history: list[History]
+
+
+class UpdateChapterRequest(BaseModel):
+    is_read: bool

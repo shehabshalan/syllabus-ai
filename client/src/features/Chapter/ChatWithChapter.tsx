@@ -15,6 +15,7 @@ import {
   ExpandableChatFooter,
   ExpandableChatHeader,
 } from '@/components/ui/chat/expandable-chat';
+import { useToast } from '@/components/ui/use-toast';
 import { Lightbulb, Send, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 type ChatWithChapterProps = {
@@ -26,11 +27,12 @@ const ChatWithChapter = ({ chapter }: ChatWithChapterProps) => {
   const [message, setMessage] = useState('');
   const { mutateAsync, isPending } = useChatWithChapter();
   const { data: user } = useMe();
+  const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!message.trim()) return;
-
+    const messageToSend = message.trim();
     setMessages((prevMessages) => [
       ...prevMessages,
       {
@@ -60,7 +62,13 @@ const ChatWithChapter = ({ chapter }: ChatWithChapterProps) => {
           ]);
         },
         onError: () => {
+          setMessage(messageToSend);
           setMessages((prevMessages) => prevMessages.slice(0, -1));
+          toast({
+            variant: 'destructive',
+            title: 'An error occurred',
+            description: 'Failed to send message',
+          });
         },
       }
     );

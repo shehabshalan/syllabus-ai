@@ -26,6 +26,7 @@ import type {
   GetChapterResponse,
   GetTopicChaptersResponse,
   HTTPValidationError,
+  UpdateChapterRequest,
   UserResponse,
   UserTopics
 } from '../../apiSchemas'
@@ -441,3 +442,62 @@ export function useGetChapter<TData = Awaited<ReturnType<typeof getChapter>>, TE
 
 
 
+/**
+ * @summary Update Chapter Read Status
+ */
+export const updateChapterReadStatus = (
+    id: number,
+    updateChapterRequest: UpdateChapterRequest,
+ options?: SecondParameter<typeof apiFetcher>,) => {
+      
+      
+      return apiFetcher<unknown>(
+      {url: `/user/chapter/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: updateChapterRequest
+    },
+      options);
+    }
+  
+
+
+export const getUpdateChapterReadStatusMutationOptions = <TError = ErrorType<HTTPValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateChapterReadStatus>>, TError,{id: number;data: UpdateChapterRequest}, TContext>, request?: SecondParameter<typeof apiFetcher>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateChapterReadStatus>>, TError,{id: number;data: UpdateChapterRequest}, TContext> => {
+const {mutation: mutationOptions, request: requestOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateChapterReadStatus>>, {id: number;data: UpdateChapterRequest}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  updateChapterReadStatus(id,data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateChapterReadStatusMutationResult = NonNullable<Awaited<ReturnType<typeof updateChapterReadStatus>>>
+    export type UpdateChapterReadStatusMutationBody = UpdateChapterRequest
+    export type UpdateChapterReadStatusMutationError = ErrorType<HTTPValidationError>
+
+    /**
+ * @summary Update Chapter Read Status
+ */
+export const useUpdateChapterReadStatus = <TError = ErrorType<HTTPValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateChapterReadStatus>>, TError,{id: number;data: UpdateChapterRequest}, TContext>, request?: SecondParameter<typeof apiFetcher>}
+): UseMutationResult<
+        Awaited<ReturnType<typeof updateChapterReadStatus>>,
+        TError,
+        {id: number;data: UpdateChapterRequest},
+        TContext
+      > => {
+
+      const mutationOptions = getUpdateChapterReadStatusMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    

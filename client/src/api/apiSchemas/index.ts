@@ -26,6 +26,7 @@ export * from './hTTPValidationError';
 export * from './history';
 export * from './historyUserType';
 export * from './question';
+export * from './updateChapterRequest';
 export * from './userResponse';
 export * from './userResponsePicture';
 export * from './userResponseToken';

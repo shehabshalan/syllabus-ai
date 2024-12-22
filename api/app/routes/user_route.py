@@ -10,6 +10,7 @@ from app.utils.schema import (
     AuthRequest,
     GetChapterResponse,
     GetTopicChaptersResponse,
+    UpdateChapterRequest,
     UserResponse,
     UserTopics,
 )
@@ -70,3 +71,17 @@ async def get_chapter(
 ) -> GetChapterResponse:
     chapter = db.get_chapter_by_id(session, id, current_user.id)
     return chapter
+
+
+@router.put(
+    "/chapter/{id}",
+    operation_id="update_chapter_read_status",
+)
+async def update_chapter_read_status(
+    id: int,
+    request: UpdateChapterRequest,
+    current_user: Annotated[UserResponse, Depends(get_current_user)],
+    session: Session = Depends(db.get_session),
+) -> None:
+    db.update_user_chapter_read_status(session, id, current_user.id, request.is_read)
+    return status.HTTP_200_OK

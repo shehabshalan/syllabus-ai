@@ -7,6 +7,7 @@ from sqlalchemy import (
     Integer,
     String,
     Text,
+    case,
     create_engine,
     func,
 )
@@ -196,6 +197,7 @@ def get_user_topic_chapters_by_id(
                     "title": chapter.title,
                     "description": chapter.short_description,
                     "content": chapter.content,
+                    "is_read": chapter.is_read,
                 }
                 for chapter in sorted_chapters
             ],
@@ -205,7 +207,11 @@ def get_user_topic_chapters_by_id(
 
 def get_user_topics(session: Session, user_id: int) -> list[UserTopics]:
     topics_with_counts = (
-        session.query(Topics, func.count(Chapters.id).label("chapter_count"))
+        session.query(
+            Topics,
+            func.count(Chapters.id).label("total_chapters"),
+            func.count(case((Chapters.is_read, 1))).label("read_chapters"),
+        )
         .outerjoin(Chapters, Topics.id == Chapters.topic_id)
         .filter(Topics.user_id == user_id)
         .group_by(Topics.id)
@@ -216,10 +222,12 @@ def get_user_topics(session: Session, user_id: int) -> list[UserTopics]:
         {
             "id": topic.id,
             "title": topic.title,
-            "progress": topic.progress,
-            "chapter_count": count,
+            "progress": int(
+                round((read_count / total_count * 100) if total_count > 0 else 0)
+            ),
+            "chapter_count": total_count,
         }
-        for topic, count in topics_with_counts
+        for topic, total_count, read_count in topics_with_counts
     ]
 
 
@@ -274,6 +282,23 @@ def update_chapter_content(
 
     if chapter:
         chapter.content = content
+        session.commit()
+        return
+    return None
+
+
+def update_user_chapter_read_status(
+    session: Session, chapter_id: int, user_id: int, is_read: bool
+):
+    chapter = (
+        session.query(Chapters)
+        .join(Topics, Topics.id == Chapters.topic_id)
+        .filter(Chapters.id == chapter_id, Topics.user_id == user_id)
+        .first()
+    )
+
+    if chapter:
+        chapter.is_read = is_read
         session.commit()
         return
     return None
