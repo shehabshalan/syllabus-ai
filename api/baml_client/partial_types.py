@@ -40,3 +40,7 @@ class ChapterOutline(BaseModel):
 class Chapters(BaseModel):
     topic: Optional[str] = None
     chapters: List["ChapterOutline"]
+
+class ChatResponse(BaseModel):
+    response: Optional[str] = None
+

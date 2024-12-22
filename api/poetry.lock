@@ -34,18 +34,18 @@ trio = ["trio (>=0.26.1)"]
 
 [[package]]
 name = "baml-py"
-version = "0.69.0"
+version = "0.70.1"
 description = "BAML python bindings (pyproject.toml)"
 optional = false
 python-versions = "*"
 files = [
-    {file = "baml_py-0.69.0-cp38-abi3-macosx_10_12_x86_64.whl", hash = "sha256:a4038734fc6424a78cd768f052dee7119b5a02b025c820e002265e77b8eabbf5"},
-    {file = "baml_py-0.69.0-cp38-abi3-macosx_11_0_arm64.whl", hash = "sha256:1e9c973cd58ae1d95990b9983404dd26522b65a27f18e676605a5c55c272cf93"},
-    {file = "baml_py-0.69.0-cp38-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:90a3db749393cb81e644ea13e9b32e5c47b36b0f78ea9dee6e8353301c7002f5"},
-    {file = "baml_py-0.69.0-cp38-abi3-manylinux_2_24_aarch64.whl", hash = "sha256:35da75e8506cf5ee1e8ac693f24e4db5f6ac6736a0e294881c8d90d93391bc56"},
-    {file = "baml_py-0.69.0-cp38-abi3-musllinux_1_1_aarch64.whl", hash = "sha256:cf1e53d09ed49c4956a2ae4b7e22a886d184ee40dbb29bb617e7ce618705cdc4"},
-    {file = "baml_py-0.69.0-cp38-abi3-musllinux_1_1_x86_64.whl", hash = "sha256:32716321756b642fe1da544657f2857f1504b841a64da6e89f5b5e0c8892408a"},
-    {file = "baml_py-0.69.0-cp38-abi3-win_amd64.whl", hash = "sha256:bbbf93f9d248d108b9502e8f7648dc4142db1a19418ee170f2c0c7ac15de0d2b"},
+    {file = "baml_py-0.70.1-cp38-abi3-macosx_10_12_x86_64.whl", hash = "sha256:7b2f4a00cd21a6918013f23280e6473f175fc170cb2de1a45a2d02e4e634b58d"},
+    {file = "baml_py-0.70.1-cp38-abi3-macosx_11_0_arm64.whl", hash = "sha256:ab16b6e3a741a12da3aa7f961d0843eae34cca68a7944a9a307ba118d7427064"},
+    {file = "baml_py-0.70.1-cp38-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:05f42a527ea199a561fc6215c639e2e6ccf20be664e9568d11de41b9778c4135"},
+    {file = "baml_py-0.70.1-cp38-abi3-manylinux_2_24_aarch64.whl", hash = "sha256:210bebaafaf0ebeb65cb7487f706cc577b5aeee7bf64655c5b06575853d56e02"},
+    {file = "baml_py-0.70.1-cp38-abi3-musllinux_1_1_aarch64.whl", hash = "sha256:0c44df7ea2a798ac452cb2c55a2b0c18fe706015d036b2c55ff68d1ab71b0676"},
+    {file = "baml_py-0.70.1-cp38-abi3-musllinux_1_1_x86_64.whl", hash = "sha256:ad7f093def46095257583927364cc511b0dbd8b430a3a80ee2bf4fa1ae05b7f5"},
+    {file = "baml_py-0.70.1-cp38-abi3-win_amd64.whl", hash = "sha256:209c325f418003b1fc3f52766758ae25f367baeb1986f989ef8f3104cbd33eb8"},
 ]
 
 [[package]]
@@ -1681,4 +1681,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "b4dda8974eb1594333061d78acdd4743375073f60b0054dfe1996a71f58cf5c0"
+content-hash = "9bab163acae4fcc3a5416254fd6b2be75695df1209ce9954934f21a7b34be63a"

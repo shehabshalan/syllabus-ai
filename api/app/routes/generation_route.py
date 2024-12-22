@@ -1,9 +1,8 @@
+import json
 import os
 from typing import Annotated
 
 import dotenv
-from baml_client import reset_baml_env_vars
-from baml_client.sync_client import b
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
@@ -14,8 +13,10 @@ from app.prompts import (
 from app.utils import schema
 from app.utils.auth_dep import get_current_user
 from app.utils.llm import LLM
-from app.utils.schema import ChaptersGenerationResponse, UserResponse
+from app.utils.schema import ChaptersGenerationResponse, ChatRequest, UserResponse
 from app.utils.settings import settings
+from baml_client import reset_baml_env_vars
+from baml_client.async_client import b
 
 router = APIRouter(prefix="/generation", tags=["LLM Generation"])
 dotenv.load_dotenv()
@@ -100,3 +101,20 @@ def generate_quiz(
     )
 
     return schema.GenerateQuizResponse(**response)
+
+
+@router.post("/chat/chapter/{id}", operation_id="chat_with_chapter")
+async def chat_with_chapter(
+    id: int,
+    request: ChatRequest,
+    current_user: Annotated[UserResponse, Depends(get_current_user)],
+    session: Session = Depends(db.get_session),
+):
+    chapter = db.get_chapter_by_id(session, id, current_user.id)
+    history = json.dumps([item.model_dump() for item in request.history])
+    response = await b.ChatChapter(
+        content=chapter["content"],
+        message=request.message,
+        history=history,
+    )
+    return response

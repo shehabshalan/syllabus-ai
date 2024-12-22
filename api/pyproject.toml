@@ -18,7 +18,7 @@ google-auth = "2.25.2"
 requests = "^2.32.3"
 psycopg2-binary = "^2.9.10"
 pyjwt = "^2.9.0"
-baml-py = "0.69.0"
+baml-py = "0.70.1"
 
 
 [build-system]

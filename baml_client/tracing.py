@@ -13,24 +13,13 @@
 # flake8: noqa: E501,F401
 # pylint: disable=unused-import,line-too-long
 # fmt: off
-import typing
-from baml_py.baml_py import FieldType, EnumValueBuilder, EnumBuilder, ClassBuilder
-from baml_py.type_builder import TypeBuilder as _TypeBuilder, ClassPropertyBuilder
+from .globals import DO_NOT_USE_DIRECTLY_UNLESS_YOU_KNOW_WHAT_YOURE_DOING_CTX
 
-class TypeBuilder(_TypeBuilder):
-    def __init__(self):
-        super().__init__(classes=set(
-          ["Chapter","ChapterOutline","Chapters","ChatResponse",]
-        ), enums=set(
-          []
-        ))
+trace = DO_NOT_USE_DIRECTLY_UNLESS_YOU_KNOW_WHAT_YOURE_DOING_CTX.trace_fn
+set_tags = DO_NOT_USE_DIRECTLY_UNLESS_YOU_KNOW_WHAT_YOURE_DOING_CTX.upsert_tags
+def flush():
+  DO_NOT_USE_DIRECTLY_UNLESS_YOU_KNOW_WHAT_YOURE_DOING_CTX.flush()
+on_log_event = DO_NOT_USE_DIRECTLY_UNLESS_YOU_KNOW_WHAT_YOURE_DOING_CTX.on_log_event
 
 
-
-
-
-
-
-
-
-__all__ = ["TypeBuilder"]
+__all__ = ['trace', 'set_tags', "flush", "on_log_event"]

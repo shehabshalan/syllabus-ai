@@ -50,6 +50,29 @@ class BamlAsyncClient:
 
 
     
+    async def ChatChapter(
+        self,
+        content: str,message: str,history: str,
+        baml_options: BamlCallOptions = {},
+    ) -> types.ChatResponse:
+      __tb__ = baml_options.get("tb", None)
+      if __tb__ is not None:
+        tb = __tb__._tb # type: ignore (we know how to use this private attribute)
+      else:
+        tb = None
+      __cr__ = baml_options.get("client_registry", None)
+
+      raw = await self.__runtime.call_function(
+        "ChatChapter",
+        {
+          "content": content,"message": message,"history": history,
+        },
+        self.__ctx_manager.get(),
+        tb,
+        __cr__,
+      )
+      return cast(types.ChatResponse, raw.cast_to(types, types))
+    
     async def GenerateChapter(
         self,
         chapter: str,description: str,
@@ -106,6 +129,38 @@ class BamlStreamClient:
       self.__runtime = runtime
       self.__ctx_manager = ctx_manager
 
+    
+    def ChatChapter(
+        self,
+        content: str,message: str,history: str,
+        baml_options: BamlCallOptions = {},
+    ) -> baml_py.BamlStream[partial_types.ChatResponse, types.ChatResponse]:
+      __tb__ = baml_options.get("tb", None)
+      if __tb__ is not None:
+        tb = __tb__._tb # type: ignore (we know how to use this private attribute)
+      else:
+        tb = None
+      __cr__ = baml_options.get("client_registry", None)
+
+      raw = self.__runtime.stream_function(
+        "ChatChapter",
+        {
+          "content": content,
+          "message": message,
+          "history": history,
+        },
+        None,
+        self.__ctx_manager.get(),
+        tb,
+        __cr__,
+      )
+
+      return baml_py.BamlStream[partial_types.ChatResponse, types.ChatResponse](
+        raw,
+        lambda x: cast(partial_types.ChatResponse, x.cast_to(types, partial_types)),
+        lambda x: cast(types.ChatResponse, x.cast_to(types, types)),
+        self.__ctx_manager.get(),
+      )
     
     def GenerateChapter(
         self,
@@ -171,4 +226,4 @@ class BamlStreamClient:
 
 b = BamlAsyncClient(DO_NOT_USE_DIRECTLY_UNLESS_YOU_KNOW_WHAT_YOURE_DOING_RUNTIME, DO_NOT_USE_DIRECTLY_UNLESS_YOU_KNOW_WHAT_YOURE_DOING_CTX)
 
-__all__ = ["b"]
+__all__ = ["b"]

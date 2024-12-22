@@ -50,3 +50,7 @@ class ChapterOutline(BaseModel):
 class Chapters(BaseModel):
     topic: str
     chapters: List["ChapterOutline"]
+
+class ChatResponse(BaseModel):
+    response: str
+

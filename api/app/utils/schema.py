@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import List
+from typing import List, Literal
 
 from pydantic import BaseModel
 
@@ -85,3 +85,13 @@ class GetChapterResponse(BaseModel):
     content: str
     is_read: bool
     topic_id: int
+
+
+class History(BaseModel):
+    message: str
+    user_type: Literal["user", "bot"]
+
+
+class ChatRequest(BaseModel):
+    message: str
+    history: list[History]
