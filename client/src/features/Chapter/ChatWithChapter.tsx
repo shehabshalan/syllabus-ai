@@ -1,4 +1,5 @@
 import { useChatWithChapter } from '@/api/apiHooks/llm-generation/llm-generation';
+import { useMe } from '@/api/apiHooks/user/user';
 import { GetChapterResponse, History } from '@/api/apiSchemas';
 import { Button } from '@/components/ui/button';
 import {
@@ -24,10 +25,11 @@ const ChatWithChapter = ({ chapter }: ChatWithChapterProps) => {
   const [messages, setMessages] = useState<History[]>([]);
   const [message, setMessage] = useState('');
   const { mutateAsync, isPending } = useChatWithChapter();
+  const { data: user } = useMe();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!message) return;
+    if (!message.trim()) return;
 
     setMessages((prevMessages) => [
       ...prevMessages,
@@ -36,6 +38,8 @@ const ChatWithChapter = ({ chapter }: ChatWithChapterProps) => {
         user_type: 'user',
       },
     ]);
+
+    setMessage('');
 
     await mutateAsync(
       {
@@ -58,11 +62,17 @@ const ChatWithChapter = ({ chapter }: ChatWithChapterProps) => {
         onError: () => {
           setMessages((prevMessages) => prevMessages.slice(0, -1));
         },
-        onSettled: () => {
-          setMessage('');
-        },
       }
     );
+  };
+
+  const getInitials = (name: string | undefined) => {
+    if (!name) return 'Me';
+
+    return name
+      .split(' ')
+      .map((n) => n[0])
+      .join('');
   };
 
   return (
@@ -97,7 +107,11 @@ const ChatWithChapter = ({ chapter }: ChatWithChapterProps) => {
                 key={index}
                 variant={msg.user_type === 'user' ? 'sent' : 'received'}
               >
-                <ChatBubbleAvatar fallback="AI" />
+                <ChatBubbleAvatar
+                  fallback={
+                    msg.user_type === 'user' ? getInitials(user?.name) : 'AI'
+                  }
+                />
                 <ChatBubbleMessage>{msg.message}</ChatBubbleMessage>
               </ChatBubble>
             ))}
@@ -114,14 +128,23 @@ const ChatWithChapter = ({ chapter }: ChatWithChapterProps) => {
         <ExpandableChatFooter>
           <form className="flex relative gap-2" onSubmit={handleSubmit}>
             <ChatInput
-              className="min-h-12 bg-background shadow-none "
+              className="min-h-12 bg-background shadow-none"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                  e.preventDefault();
+                  if (message.trim() && !isPending) {
+                    handleSubmit(e as any);
+                  }
+                }
+              }}
             />
             <Button
               className="absolute top-1/2 right-2 transform size-8 -translate-y-1/2"
               size="icon"
               type="submit"
+              disabled={isPending || !message.trim()}
             >
               <Send className="size-4" />
             </Button>

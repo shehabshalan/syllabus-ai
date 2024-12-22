@@ -31,3 +31,10 @@ https://github.com/shehabshalan/syllabus-ai/assets/30008865/cf2e3b6f-60d5-4981-b
 - [OpenAI](https://openai.com/)
 - [FastAPI](https://fastapi.tiangolo.com/)
 - [Docker](https://www.docker.com/)
+
+TOODS:
+
+- [ ] Add mark as read for chapters.
+- [ ] Add chat with chapter. https://docs-shadcn-chat.vercel.app/components/expandable-chat
+- [ ] Add tab menu for chapters to display chapter, quiz, flashcards.
+- [ ] Investigate running long running tasks in FastAPI using Celery and Redis. Not high priority.
