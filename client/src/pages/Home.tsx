@@ -8,8 +8,8 @@ import { Input } from '@/components/ui/input';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 import { useToast } from '@/components/ui/use-toast';
 import { Sparkles } from 'lucide-react';
-import { useState } from 'react';
 import { useNavigate } from 'react-router';
+import useSearch from '@/hooks/useSearch';
 
 const HINT_TOPICS = [
   'Javascript',
@@ -19,21 +19,22 @@ const HINT_TOPICS = [
 ];
 
 const Home = () => {
+  const { value, deleteSearch, handleInputChange, setSearch } =
+    useSearch('topic');
   const navigate = useNavigate();
-  const [topic, setTopic] = useState('');
+
   const { data: user, isLoading } = useMe();
   const { mutate: generateChatpers, isPending } = useGenerateChapters();
   const { toast } = useToast();
-
   const handleSubmit = async () => {
-    if (!topic || !user) {
+    if (!value || !user) {
       return;
     }
 
     generateChatpers(
       {
         data: {
-          topic: topic,
+          topic: value,
         },
       },
       {
@@ -44,7 +45,7 @@ const Home = () => {
           toast({
             variant: 'destructive',
             title: 'An error occurred',
-            description: `We could not generate chapters for this ${topic}.`,
+            description: `We could not generate chapters for this ${value}.`,
           });
         },
       }
@@ -66,8 +67,8 @@ const Home = () => {
               <Input
                 className="h-12 pr-12 "
                 type="text"
-                value={topic}
-                onChange={(e) => setTopic(e.target.value)}
+                value={value}
+                onChange={(e) => handleInputChange(e.target.value)}
               />
               {!isLoading && !user ? (
                 <AuthWrapper
@@ -75,7 +76,7 @@ const Home = () => {
                     <Button
                       className="absolute top-0 right-0 h-full px-4 rounded-tl-none rounded-bl-none"
                       type="submit"
-                      disabled={!topic || isPending}
+                      disabled={!value || isPending}
                     >
                       <Sparkles className="mr-2 h-4 w-4" /> Learn
                     </Button>
@@ -86,7 +87,7 @@ const Home = () => {
                   className="absolute top-0 right-0 h-full px-4 rounded-tl-none rounded-bl-none"
                   type="submit"
                   onClick={handleSubmit}
-                  disabled={!topic || isPending}
+                  disabled={!value || isPending}
                 >
                   <Sparkles className="mr-2 h-4 w-4" /> Learn
                 </Button>
@@ -98,13 +99,13 @@ const Home = () => {
             {HINT_TOPICS.map((hint, index) => (
               <Button
                 key={index}
-                variant={topic === hint ? 'outline' : 'ghost'}
+                variant={value === hint ? 'outline' : 'ghost'}
                 onClick={() => {
-                  if (topic === hint) {
-                    setTopic('');
+                  if (value === hint) {
+                    deleteSearch();
                     return;
                   }
-                  setTopic(hint);
+                  setSearch(hint);
                 }}
                 disabled={isPending}
               >
