@@ -63,9 +63,16 @@ const Home = () => {
             Get started by entering a topic you want to learn about.
           </p>
           <div className="flex w-full items-center space-x-2">
-            <div className="relative flex-grow">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSubmit();
+              }}
+              className="relative flex-grow"
+            >
               <Input
-                className="h-12 pr-12 "
+                disabled={isPending}
+                className="h-12 pr-12"
                 type="text"
                 value={value}
                 onChange={(e) => handleInputChange(e.target.value)}
@@ -86,13 +93,12 @@ const Home = () => {
                 <Button
                   className="absolute top-0 right-0 h-full px-4 rounded-tl-none rounded-bl-none"
                   type="submit"
-                  onClick={handleSubmit}
                   disabled={!value || isPending}
                 >
                   <Sparkles className="mr-2 h-4 w-4" /> Learn
                 </Button>
               )}
-            </div>
+            </form>
           </div>
           <p className="text-sm text-muted-foreground">Hint: Try topics</p>
           <div className="flex gap-2 flex-wrap items-center justify-center">
