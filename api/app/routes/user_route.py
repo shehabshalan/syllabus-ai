@@ -31,11 +31,10 @@ async def auth(
 
 
 @router.get("/me", response_model=UserResponse, operation_id="me")
-async def me(request: Request) -> UserResponse:
-    token = request.headers.get("Authorization")
-    if not token:
-        raise HTTPException(status_code=401, detail="Unauthorized")
-    return await user_service.get_user(token)
+async def me(
+    current_user: Annotated[UserResponse, Depends(get_current_user)],
+) -> UserResponse:
+    return current_user
 
 
 @router.get(
@@ -49,6 +48,11 @@ async def get_topic_chapters(
     session: Session = Depends(db.get_session),
 ) -> GetTopicChaptersResponse:
     topic_chapters = db.get_user_topic_chapters_by_id(session, id, current_user.id)
+    if not topic_chapters:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Topic not found or you do not have access to it",
+        )
     return topic_chapters
 
 
@@ -58,6 +62,11 @@ async def get_topics(
     session: Session = Depends(db.get_session),
 ) -> list[UserTopics]:
     topics = db.get_user_topics(session, current_user.id)
+    if not topics:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="No topics found for the user",
+        )
     return topics
 
 
@@ -70,6 +79,11 @@ async def get_chapter(
     session: Session = Depends(db.get_session),
 ) -> GetChapterResponse:
     chapter = db.get_chapter_by_id(session, id, current_user.id)
+    if not chapter:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Chapter not found or you do not have access to it",
+        )
     return chapter
 
 

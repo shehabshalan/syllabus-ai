@@ -4,10 +4,8 @@ import jwt
 import requests
 from fastapi import HTTPException, status
 
+from app.utils.constants import ACCESS_TOKEN_EXPIRE_MINUTES, ALGORITHM
 from app.utils.settings import settings
-
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 
 def generate_access_token(data: dict):
@@ -70,25 +68,3 @@ def verify_google_token(token: str):
     }
 
     return user_info
-
-
-def verify_token(token: str):
-    payload = None
-    try:
-        payload = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[ALGORITHM])
-    except jwt.ExpiredSignatureError:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid credentials",
-        )
-
-    if payload is None:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid credentials",
-        )
-    return payload
-
-
-def get_current_user(token: str = None):
-    return verify_token(token)
